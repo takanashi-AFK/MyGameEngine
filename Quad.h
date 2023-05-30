@@ -5,7 +5,7 @@
 
 using namespace DirectX;
 
-//コンスタントバッファー
+//コンスタントバッファ
 struct CONSTANT_BUFFER
 {
 	XMMATRIX	matWVP;
@@ -24,3 +24,4 @@ public:
 	void Draw();
 	void Release();
 };
+
