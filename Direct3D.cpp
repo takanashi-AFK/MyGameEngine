@@ -1,13 +1,14 @@
 #include <d3dcompiler.h>
 #include "Direct3D.h"
+#include <cassert>
 
 //変数
 namespace Direct3D
 {
-	ID3D11Device* pDevice;		//デバイス
-	ID3D11DeviceContext* pContext;		//デバイスコンテキスト
-	IDXGISwapChain* pSwapChain;		//スワップチェイン
-	ID3D11RenderTargetView* pRenderTargetView;	//レンダーターゲットビュー
+	ID3D11Device* pDevice=nullptr;		//デバイス
+	ID3D11DeviceContext* pContext = nullptr;		//デバイスコンテキスト
+	IDXGISwapChain* pSwapChain = nullptr;		//スワップチェイン
+	ID3D11RenderTargetView* pRenderTargetView = nullptr;	//レンダーターゲットビュー
 
 	ID3D11VertexShader* pVertexShader = nullptr;	//頂点シェーダー
 	ID3D11PixelShader* pPixelShader = nullptr;		//ピクセルシェーダー
@@ -99,6 +100,7 @@ void Direct3D::InitShader()
 	// 頂点シェーダの作成（コンパイル）
 	ID3DBlob* pCompileVS = nullptr;
 	D3DCompileFromFile(L"Simple3D.hlsl", nullptr, nullptr, "VS", "vs_5_0", NULL, 0, &pCompileVS, NULL);
+	assert(pCompileVS != nullptr);
 	pDevice->CreateVertexShader(pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), NULL, &pVertexShader);
 
 	//頂点インプットレイアウト
@@ -106,15 +108,13 @@ void Direct3D::InitShader()
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },	//位置
 	};
 	pDevice->CreateInputLayout(layout, 1, pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), &pVertexLayout);
-
-	pCompileVS->Release();
-
+	SAFE_RELEASE(pCompileVS)
 	// ピクセルシェーダの作成（コンパイル）
 	ID3DBlob* pCompilePS = nullptr;
 	D3DCompileFromFile(L"Simple3D.hlsl", nullptr, nullptr, "PS", "ps_5_0", NULL, 0, &pCompilePS, NULL);
+	assert(pCompilePS != nullptr);
 	pDevice->CreatePixelShader(pCompilePS->GetBufferPointer(), pCompilePS->GetBufferSize(), NULL, &pPixelShader);
-	pCompilePS->Release();
-
+	SAFE_RELEASE(pCompilePS)
 	//ラスタライザ作成
 	D3D11_RASTERIZER_DESC rdc = {};
 	rdc.CullMode = D3D11_CULL_BACK;
@@ -147,6 +147,7 @@ void Direct3D::EndDraw()
 {
 	//スワップ（バックバッファを表に表示する）
 	pSwapChain->Present(0, 0);
+
 }
 
 
@@ -155,13 +156,13 @@ void Direct3D::EndDraw()
 void Direct3D::Release()
 {
 	//解放処理
-	pRasterizerState->Release();
-	pVertexLayout->Release();
-	pPixelShader->Release();
-	pVertexShader->Release();
+	SAFE_RELEASE(pRasterizerState);
+	SAFE_RELEASE(pVertexLayout);
+	SAFE_RELEASE(pPixelShader);
+	SAFE_RELEASE(pVertexShader);
 
-	pRenderTargetView->Release();
-	pSwapChain->Release();
-	pContext->Release();
-	pDevice->Release();
+	SAFE_RELEASE(pRenderTargetView);
+	SAFE_RELEASE(pSwapChain);
+	SAFE_RELEASE(pContext);
+	SAFE_RELEASE(pDevice);
 }
