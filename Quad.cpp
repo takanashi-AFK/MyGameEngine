@@ -10,8 +10,9 @@ Quad::~Quad()
 	Release();
 }
 
-void Quad::Initialize()
+HRESULT Quad::Initialize()
 {
+	HRESULT hr;
 	// 頂点情報
 	XMVECTOR vertices[] =
 	{
@@ -33,8 +34,15 @@ void Quad::Initialize()
 	bd_vertex.StructureByteStride = 0;
 	D3D11_SUBRESOURCE_DATA data_vertex;
 	data_vertex.pSysMem = vertices;
-	Direct3D::pDevice->CreateBuffer(&bd_vertex, &data_vertex, &pVertexBuffer_);
+	hr = Direct3D::pDevice->CreateBuffer(&bd_vertex, &data_vertex, &pVertexBuffer_);
+	if (FAILED(hr))
+	{
 
+		MessageBox(nullptr, "頂点バッファの作成に失敗しました", "エラー", MB_OK);
+
+		return hr;
+
+	}
 
 
 	//インデックス情報
@@ -52,8 +60,15 @@ void Quad::Initialize()
 	InitData.pSysMem = index;
 	InitData.SysMemPitch = 0;
 	InitData.SysMemSlicePitch = 0;
-	Direct3D::pDevice->CreateBuffer(&bd, &InitData, &pIndexBuffer_);
+	hr =Direct3D::pDevice->CreateBuffer(&bd, &InitData, &pIndexBuffer_);
+	if (FAILED(hr))
+	{
 
+		MessageBox(nullptr, "インデックスバッファの作成に失敗しました", "エラー", MB_OK);
+
+		return hr;
+
+	}
 
 	//コンスタントバッファ作成
 	D3D11_BUFFER_DESC cb;
@@ -65,7 +80,17 @@ void Quad::Initialize()
 	cb.StructureByteStride = 0;
 
 	// コンスタントバッファの作成
-	Direct3D::pDevice->CreateBuffer(&cb, nullptr, &pConstantBuffer_);
+	hr = Direct3D::pDevice->CreateBuffer(&cb, nullptr, &pConstantBuffer_);
+	if (FAILED(hr))
+	{
+
+		MessageBox(nullptr, "コンスタントバッファの作成に失敗しました", "エラー", MB_OK);
+
+		return hr;
+
+	}
+
+	return S_OK;
 }
 
 void Quad::Draw()

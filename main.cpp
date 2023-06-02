@@ -11,13 +11,11 @@ const int WINDOW_HEIGHT = 600; //ウィンドウの高さ
 //プロトタイプ宣言
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-
-
-
 //エントリーポイント
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, int nCmdShow)
 {
-	
+
+
 	//ウィンドウクラス（設計図）を作成
 	WNDCLASSEX wc;
 	wc.cbSize = sizeof(WNDCLASSEX);             //この構造体のサイズ
@@ -58,14 +56,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	//ウィンドウを表示
 	ShowWindow(hWnd, nCmdShow);
 
+	HRESULT hr;
 	//Direct3D初期化
 
-	Direct3D::Initialize(winW, winH, hWnd);
-
+	hr = Direct3D::Initialize(winW, winH, hWnd);	
+	if (FAILED(hr))return hr;
 	Quad* q = new Quad;
 
-	q->Initialize();
-
+	hr =q->Initialize();
+	if (FAILED(hr))return hr;
 
 	//メッセージループ（何か起きるのを待つ）
 	MSG msg;
@@ -85,17 +84,12 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			//ゲームの処理
 			Direct3D::BeginDraw();
 
-
-
 			//描画処理
 			q->Draw();
 
-
 			Direct3D::EndDraw();
-
 		}
 	}
-
 
 	Direct3D::Release();
 	SAFE_RELEASE(q);
