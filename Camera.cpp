@@ -48,5 +48,3 @@ XMMATRIX Camera::GetProjectionMatrix()
 {
 	return projMatrix_;
 }
-
-//sasdsa
