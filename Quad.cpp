@@ -93,7 +93,7 @@ HRESULT Quad::Initialize()
 	return S_OK;
 }
 
-void Quad::Draw()
+void Quad::Draw(XMMATRIX& worldMatrix)
 {
 	////コンスタントバッファに渡す情報
 	//XMVECTOR position = { 0, 3, -10, 0 };	//カメラの位置
@@ -105,10 +105,10 @@ void Quad::Draw()
 	////NearClippingSurfaceとFarClipSurfaceの差はできるだけ小さくしていけ
 
 //プロジェクション座標は、遠いものは引き伸ばし、近いものは圧縮．遠近を圧縮した幅1m.横高さ2m2mの四角い箱に収める
-	//ズームと接近\
-	視野角を狭めてズームすると、遠近感がなくなる
+	//ズームと接近
+	//視野角を狭めてズームすると、遠近感がなくなる
 	CONSTANT_BUFFER cb;
-	cb.matWVP = XMMatrixTranspose(Camera::GetViewMatrix()*Camera::GetProjectionMatrix());
+	cb.matWVP = XMMatrixTranspose(worldMatrix * Camera::GetViewMatrix()* Camera::GetProjectionMatrix());
 
 	D3D11_MAPPED_SUBRESOURCE pdata;
 	Direct3D::pContext->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める

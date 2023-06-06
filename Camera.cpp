@@ -28,13 +28,24 @@ void Camera::Update()
 //位置を設定
 void Camera::SetPosition(XMVECTOR position)
 {
-	position = position_;
+	position_ = position;
+}
+
+void Camera::SetPosition(XMFLOAT3 position)
+{
+	SetPosition(XMLoadFloat3(&position));//処理が同じだから、最終的にVECTORのほうが呼ばれるから
+	//変更があったらVectorのほうをいじる
 }
 
 //焦点を設定
 void Camera::SetTarget(XMVECTOR target)
 {
-	target = target_;
+	target_ = target;
+}
+
+void Camera::SetTarget(XMFLOAT3 target)
+{
+	SetTarget(XMLoadFloat3(&target));
 }
 
 //ビュー行列を取得

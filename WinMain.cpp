@@ -20,7 +20,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	WNDCLASSEX wc;
 	wc.cbSize = sizeof(WNDCLASSEX);             //この構造体のサイズ
 	wc.hInstance = hInstance;                   //インスタンスハンドル
-	wc.lpszClassName = WIN_CLASS_NAME;            //ウィンドウクラス名
+	wc.lpszClassName = WIN_CLASS_NAME;          //ウィンドウクラス名
 	wc.lpfnWndProc = WndProc;                   //ウィンドウプロシージャ
 	wc.style = CS_VREDRAW | CS_HREDRAW;         //スタイル（デフォルト）
 	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION); //アイコン
@@ -45,8 +45,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 		WS_OVERLAPPEDWINDOW, //スタイル（普通のウィンドウ）
 		CW_USEDEFAULT,       //表示位置左（おまかせ）
 		CW_USEDEFAULT,       //表示位置上（おまかせ）
-		800,                 //ウィンドウ幅
-		600,                 //ウィンドウ高さ
+		winW,                 //ウィンドウ幅
+		winH,                 //ウィンドウ高さ
 		NULL,                //親ウインドウ（なし）
 		NULL,                //メニュー（なし）
 		hInstance,           //インスタンス
@@ -62,12 +62,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	hr = Direct3D::Initialize(winW, winH, hWnd);	
 	if (FAILED(hr))return hr;
 	Camera::Initialize();
+	Camera::SetTarget(XMFLOAT3{ 0,2,-5});
 	Quad* q = new Quad;
 
 	hr =q->Initialize();
 	if (FAILED(hr))return hr;
 
 	//メッセージループ（何か起きるのを待つ）
+	int i=0;
 	MSG msg;
 	ZeroMemory(&msg, sizeof(msg));
 	while (msg.message != WM_QUIT)
@@ -82,13 +84,34 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 		//メッセージなし
 		else
 		{
+			Camera::Update();
 			//ゲームの処理
 			Direct3D::BeginDraw();
 
-			Camera::Update();
 			//描画処理
-			q->Draw();
+			XMMATRIX mat = XMMatrixRotationY(XMConvertToRadians(45));
+			//Y軸で45°回転
+			XMMATRIX MoveMat = { 1,0,0,0,
+							 	 0,1,0,0,
+								 0,0,1,0,
+								 4,0,0,1 };
+			//XMMATRIX ZoomMat = XMMatrixScaling(1, 3, 1);
 
+			XMMATRIX ZoomMat = { 1,0,0,0,
+								 0,3,0,0,
+								 0,0,1,0,
+								 0,0,0,1 };
+		//	XMMATRIX OKOKwakatta = XMMatrixTranslation(4, 0, 0) * XMMatrixScaling(1, 3, 1);
+			XMMATRIX MoveZoomMat = { 1,0,0,0,
+									 0,3,0,0,
+									 0,0,1,0,
+									 4,0,0,1 };
+
+			XMMATRIX ZrotXmovMat = XMMatrixTranslation(3, 0, 0) *  XMMatrixScaling(1, 3, 1) * XMMatrixRotationZ(XMConvertToRadians(-45));
+
+			XMMATRIX guruguru = XMMatrixRotationY(XMConvertToRadians(i));
+			q->Draw(guruguru);
+			i++;
 			Direct3D::EndDraw();
 		}
 	}

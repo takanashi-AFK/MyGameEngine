@@ -126,8 +126,8 @@ HRESULT Direct3D::InitShader()
 	SAFE_RELEASE(pCompilePS)
 	//ラスタライザ作成
 	D3D11_RASTERIZER_DESC rdc = {};
-	rdc.CullMode = D3D11_CULL_BACK;
-	rdc.FillMode = D3D11_FILL_WIREFRAME;
+	rdc.CullMode = D3D11_CULL_NONE;
+	rdc.FillMode = D3D11_FILL_SOLID;
 	rdc.FrontCounterClockwise = FALSE;
 
 	hr =pDevice->CreateRasterizerState(&rdc, &pRasterizerState);
