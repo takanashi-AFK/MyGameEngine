@@ -140,3 +140,5 @@ void Quad::Release()
 	SAFE_RELEASE(pIndexBuffer_);
 	SAFE_RELEASE(pVertexBuffer_);
 }
+
+//a
