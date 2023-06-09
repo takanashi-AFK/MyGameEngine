@@ -32,7 +32,6 @@ HRESULT Texture::Load(string filename)
 	hr = LoadFromWICFile(wtext, WIC_FLAGS::WIC_FLAGS_NONE, &metadata, image);
 	if (FAILED(hr))
 	{
-
 		MessageBox(nullptr, "画像ファイルの読み込みに失敗しました", "エラー", MB_OK);
 		return E_FAIL;
 	}
@@ -43,13 +42,13 @@ HRESULT Texture::Load(string filename)
 	SamDesc.AddressU = D3D11_TEXTURE_ADDRESS_CLAMP;
 	SamDesc.AddressV = D3D11_TEXTURE_ADDRESS_CLAMP;
 	SamDesc.AddressW = D3D11_TEXTURE_ADDRESS_CLAMP;
-	Direct3D::pDevice->CreateSamplerState(&SamDesc, &pSampler_);
+	Direct3D::pDevice_->CreateSamplerState(&SamDesc, &pSampler_);
 
 	D3D11_SHADER_RESOURCE_VIEW_DESC srv = {};
 	srv.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	srv.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
 	srv.Texture2D.MipLevels = 1;
-	hr =CreateShaderResourceView(Direct3D::pDevice,image.GetImages(),image.GetImageCount(),metadata ,&pSRV_);
+	hr =CreateShaderResourceView(Direct3D::pDevice_,image.GetImages(),image.GetImageCount(),metadata ,&pSRV_);
 	if(FAILED(hr))
 
 	return S_OK;
