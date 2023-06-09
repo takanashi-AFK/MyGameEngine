@@ -1,7 +1,7 @@
 ﻿//インクルード
 #include <Windows.h>
 #include "Direct3D.h"
-#include"Quad.h"
+#include"Dice.h"
 #include"Camera.h"
 //定数宣言
 const char* WIN_CLASS_NAME = "SampleGame";  //ウィンドウクラス名
@@ -63,9 +63,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	if (FAILED(hr))return hr;
 	Camera::Initialize();
 	Camera::SetTarget(XMFLOAT3{ 0,2,-5});
-	Quad* q = new Quad;
+	Dice* d = new Dice;
 
-	hr =q->Initialize();
+	hr =d->Initialize();
 	if (FAILED(hr))return hr;
 
 	//メッセージループ（何か起きるのを待つ）
@@ -109,15 +109,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 			XMMATRIX ZrotXmovMat = XMMatrixTranslation(3, 0, 0) *  XMMatrixScaling(1, 3, 1) * XMMatrixRotationZ(XMConvertToRadians(-45));
 
-			XMMATRIX guruguru = XMMatrixRotationY(XMConvertToRadians(i));
-			q->Draw(guruguru);
+			XMMATRIX guruguru = XMMatrixRotationY(XMConvertToRadians(i/8));
+			d->Draw(mat);
 			i++;
 			Direct3D::EndDraw();
 		}
 	}
 
 	Direct3D::Release();
-	SAFE_RELEASE(q);
+	SAFE_RELEASE(d);
 	return 0;
 }
 
