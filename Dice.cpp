@@ -24,7 +24,7 @@ HRESULT Dice::Initialize()
 		{XMVectorSet(-1.0f,  1.0f, 2.0f, 0.0f),XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f) },// 四角形の頂点（左上）
 		{XMVectorSet(1.0f,  1.0f, 2.0f, 0.0f), XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f)},	// 四角形の頂点（右上）
 		{XMVectorSet(1.0f, -1.0f, 2.0f, 0.0f),XMVectorSet(1.0f, 1.0f, 0.0f, 0.0f)},// 四角形の頂点（右下）
-		{XMVectorSet(-1.0f, -1.0f, 2.0f, 0.0f),XMVectorSet(1.0f, 1.0f, 0.0f, 0.0f)},// 四角形の頂点（右下）
+		{XMVectorSet(-1.0f, -1.0f, 2.0f, 0.0f),XMVectorSet(1.0f, 1.0f, 0.0f, 0.0f)},// 四角形の頂点（左下）
 	};
 
 	// 頂点データ用バッファの設定
@@ -58,10 +58,10 @@ HRESULT Dice::Initialize()
 					3,6,7,//下
 					3,6,2,
 
-					2,6,1,//右
+					6,1,2,//右
 					6,1,5,
 
-					4,0,3,//左
+					4,3,0,//左
 					4,3,7
 					};
 
