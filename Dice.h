@@ -3,28 +3,13 @@
 #include <DirectXMath.h>
 #include "Direct3D.h"
 #include"Texture.h"
+#include"Quad.h"
 
 using namespace DirectX;
 
-//コンスタントバッファ
-struct CONSTANT_BUFFER
-{
-	XMMATRIX	matWVP;
-};
 
-//頂点情報
-struct VERTEX
+class Dice :public Quad
 {
-	XMVECTOR position;
-	XMVECTOR uv;
-};
-
-class Dice
-{
-	ID3D11Buffer* pVertexBuffer_;	//頂点バッファ
-	ID3D11Buffer* pIndexBuffer_;
-	ID3D11Buffer* pConstantBuffer_;	//コンスタントバッファ
-	Texture* pTexture_;
 
 public:
 	Dice();
