@@ -111,9 +111,10 @@ HRESULT Direct3D::InitShader()
 	D3D11_INPUT_ELEMENT_DESC layout[] = {
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },	//位置
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::XMVECTOR) , D3D11_INPUT_PER_VERTEX_DATA, 0 },//UV座標
+		{ "NORMAL",	0, DXGI_FORMAT_R32G32B32_FLOAT, 0, sizeof(DirectX::XMVECTOR) * 2 ,	D3D11_INPUT_PER_VERTEX_DATA, 0 },//法線
 	};
 
-	hr =pDevice_->CreateInputLayout(layout, 2, pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), &pVertexLayout_);
+	hr =pDevice_->CreateInputLayout(layout, 3, pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), &pVertexLayout_);
 	if (FAILED(hr)) return hr;
 	SAFE_RELEASE(pCompileVS)
 	// ピクセルシェーダの作成（コンパイル）
@@ -134,7 +135,7 @@ HRESULT Direct3D::InitShader()
 	if (FAILED(hr)) return hr;
 
 	//それぞれをデバイスコンテキストにセット
-	pContext_->VSSetShader(pVertexShader_, NULL, 0);	//頂点シェーダー
+	pContext_->VSSetShader(pVertexShader_, NULL, 0);//頂点シェーダー
 	pContext_->PSSetShader(pPixelShader_, NULL, 0);	//ピクセルシェーダー
 	pContext_->IASetInputLayout(pVertexLayout_);	//頂点インプットレイアウト
 	pContext_->RSSetState(pRasterizerState_);		//ラスタライザー

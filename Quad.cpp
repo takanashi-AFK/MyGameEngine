@@ -16,10 +16,10 @@ HRESULT Quad::Initialize()
 	// 頂点情報
 	VERTEX  vertices[] =
 	{
-		{XMVectorSet(-1.0f,  1.0f, 0.0f, 0.0f),XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f) },// 四角形の頂点（左上）
-		{XMVectorSet(1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f)},	// 四角形の頂点（右上）
-		{XMVectorSet(1.0f, -1.0f, 0.0f, 0.0f),XMVectorSet(1.0f, 1.0f, 0.0f, 0.0f)},// 四角形の頂点（右下）
-		{XMVectorSet(-1.0f, -1.0f, 0.0f, 0.0f),XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)},	// 四角形の頂点（左下）	
+		{XMVectorSet(-1.0f,  1.0f, 0.0f, 0.0f),XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f) , XMVectorSet(0.0f,0.0f,-1.0f, 0.0f)},// 四角形の頂点（左上） 頂点位置 UV頂点位置 頂点法線方向
+		{XMVectorSet(1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f), XMVectorSet(0.0f,0.0f,-1.0f, 0.0f)},	// 四角形の頂点（右上）
+		{XMVectorSet(1.0f, -1.0f, 0.0f, 0.0f),XMVectorSet(1.0f, 1.0f, 0.0f, 0.0f), XMVectorSet(0.0f,0.0f,-1.0f,0.0f)},// 四角形の頂点（右下）
+		{XMVectorSet(-1.0f, -1.0f, 0.0f, 0.0f),XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f), XMVectorSet(0.0f,0.0f,-1.0f,0.0f)},	// 四角形の頂点（左下）	
 	};
 
 	// 頂点データ用バッファの設定
@@ -89,10 +89,6 @@ HRESULT Quad::Initialize()
 void Quad::Draw(XMMATRIX& worldMatrix)
 {
 	////コンスタントバッファに渡す情報
-	//XMVECTOR position = { 0, 3, -10, 0 };	//カメラの位置
-	//XMVECTOR target = { 0, 0, 0, 0 };	//カメラの焦点
-	//XMMATRIX view = XMMatrixLookAtLH(position, target, XMVectorSet(0, 1, 0, 0));	//ビュー行列 カメラから見た座標に変換
-	//XMMATRIX proj = XMMatrixPerspectiveFovLH(XM_PIDIV4, 800.0f / 600.0f, 0.1f, 100.0f);//射影行列 遠近感をつける
 
 	////引数: 視野角 アス比 NearClippingSurface FarClipSurface(近くはどこから、遠くはどこまで映すか)
 	////NearClippingSurfaceとFarClipSurfaceの差はできるだけ小さくしていけ
@@ -100,10 +96,10 @@ void Quad::Draw(XMMATRIX& worldMatrix)
 //プロジェクション座標は、遠いものは引き伸ばし、近いものは圧縮．遠近を圧縮した幅1m.横高さ2m2mの四角い箱に収める
 	//ズームと接近
 	//視野角を狭めてズームすると、遠近感がなくなる
+	D3D11_MAPPED_SUBRESOURCE pdata;
 	CONSTANT_BUFFER cb;
 	cb.matWVP = XMMatrixTranspose(worldMatrix * Camera::GetViewMatrix()* Camera::GetProjectionMatrix());
-
-	D3D11_MAPPED_SUBRESOURCE pdata;
+	cb.matW = worldMatrix;
 	Direct3D::pContext_->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める
 	memcpy_s(pdata.pData, pdata.RowPitch, (void*)(&cb), sizeof(cb));	// データを値を送る
 	ID3D11SamplerState* pSampler = pTexture_->GetSampler();

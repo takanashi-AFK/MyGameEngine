@@ -109,7 +109,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 			XMMATRIX ZrotXmovMat = XMMatrixTranslation(3, 0, 0) *  XMMatrixScaling(1, 3, 1) * XMMatrixRotationZ(XMConvertToRadians(-45));
 
-			XMMATRIX guruguru = XMMatrixRotationY(XMConvertToRadians(i));
+			XMMATRIX guruguru = XMMatrixRotationY(XMConvertToRadians(i/12));
 			q->Draw(guruguru);
 			i++;
 			Direct3D::EndDraw();
