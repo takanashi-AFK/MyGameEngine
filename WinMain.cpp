@@ -89,8 +89,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			Direct3D::BeginDraw();
 
 			//描画処理
-			XMMATRIX mat = XMMatrixRotationY(XMConvertToRadians(45));
-			//Y軸で45°回転
 			XMMATRIX MoveMat = { 1,0,0,0,
 							 	 0,1,0,0,
 								 0,0,1,0,
@@ -110,6 +108,26 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			XMMATRIX ZrotXmovMat = XMMatrixTranslation(3, 0, 0) *  XMMatrixScaling(1, 3, 1) * XMMatrixRotationZ(XMConvertToRadians(-45));
 
 			XMMATRIX guruguru = XMMatrixRotationY(XMConvertToRadians(i/8));
+
+			// Quadの描画処理
+			static float angle = 0;
+			angle += 0.01f;
+
+			// 各面の回転行列を作成
+			XMMATRIX rotateMatX = XMMatrixRotationX(XMConvertToRadians(angle));
+			XMMATRIX rotateMatY = XMMatrixRotationY(XMConvertToRadians(angle));
+			XMMATRIX rotateMatZ = XMMatrixRotationZ(XMConvertToRadians(angle));
+
+			// 各面を回転させる
+			XMMATRIX matFront = rotateMatX * rotateMatY;
+			XMMATRIX matBack = rotateMatX * rotateMatY;
+			XMMATRIX matTop = rotateMatX * rotateMatZ;
+			XMMATRIX matBottom = rotateMatX * rotateMatZ;
+			XMMATRIX matLeft = rotateMatY * rotateMatZ;
+			XMMATRIX matRight = rotateMatY * rotateMatZ;
+
+			// 各面の回転行列を組み合わせる
+			XMMATRIX mat = matFront * matBack * matTop * matBottom * matLeft * matRight;
 			d->Draw(mat);
 			i++;
 			Direct3D::EndDraw();
