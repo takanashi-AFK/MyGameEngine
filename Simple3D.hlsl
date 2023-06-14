@@ -1,17 +1,18 @@
 //───────────────────────────────────────
-// テクスチャ＆サンプラーデータのグローバル変数定義
+ // テクスチャ＆サンプラーデータのグローバル変数定義
 //───────────────────────────────────────
-Texture2D	g_texture : register(t0);	//テクスチャー
-SamplerState	g_sampler : register(s0);	//サンプラー
+Texture2D   g_texture : register(t0);   //テクスチャー
+SamplerState    g_sampler : register(s0);   //サンプラー
 
 //───────────────────────────────────────
- // コンスタントバッファ
+// コンスタントバッファ
 // DirectX 側から送信されてくる、ポリゴン頂点以外の諸情報の定義
 //───────────────────────────────────────
 cbuffer global
 {
-	float4x4	matWVP;			// ワールド・ビュー・プロジェクションの合成行列
-	
+    float4x4    matWVP;     // ワールド・ビュー・プロジェクションの合成行列
+    float4x4    matW;       // ワールド行列
+    float4      lightW;
 };
 
 //───────────────────────────────────────
@@ -19,9 +20,9 @@ cbuffer global
 //───────────────────────────────────────
 struct VS_OUT
 {
-	float4 pos    : SV_POSITION;	//位置
-	float2 uv	: TEXCOORD;	//UV座標
-	float4 color	: COLOR;	//色（明るさ）
+    float4 pos      : SV_POSITION;  //位置
+    float2 uv       : TEXCOORD; //UV座標
+    float4 color    : COLOR;    //色（輝度）
 };
 
 //───────────────────────────────────────
@@ -29,18 +30,26 @@ struct VS_OUT
 //───────────────────────────────────────
 VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)
 {
-	//ピクセルシェーダーへ渡す情報
-	VS_OUT outData;
+    //ピクセルシェーダーへ渡す情報
+    VS_OUT outData;
 
-	//ローカル座標に、ワールド・ビュー・プロジェクション行列をかけて
-	//スクリーン座標に変換し、ピクセルシェーダーへ
-	outData.pos = mul(pos, matWVP);
-	outData.uv = uv;
-	float4 light = float4(-1, 0.5, -0.7, 0);
-	light = normalize(light);
-	outData.color = dot(normal, light);
-	//まとめて出力
-	return outData;
+    //ローカル座標に、ワールド・ビュー・プロジェクション行列をかけて
+    //スクリーン座標に変換し、ピクセルシェーダーへ
+    outData.pos = mul(pos, matWVP);
+
+    //テクスチャデータをピクセルシェーダーへ
+    outData.uv = uv;
+
+    //法線を回転
+    normal = mul(normal, matW);
+
+    //輝度情報をピクセルシェーダ―へ
+    float4 light = float4(-1, 0.5, -0.7, 0);
+    light = normalize(light);
+    outData.color = clamp(dot(normal, light), 0, 1);;
+
+    //まとめて出力
+    return outData;
 }
 
 //───────────────────────────────────────
@@ -48,5 +57,11 @@ VS_OUT VS(float4 pos : POSITION, float4 uv : TEXCOORD, float4 normal : NORMAL)
 //───────────────────────────────────────
 float4 PS(VS_OUT inData) : SV_Target
 {
-	return g_texture.Sample(g_sampler, inData.uv) * inData.color;
+    float4 ambientSource = float4(0.5,0.5,0.5,1.0);//暗い場所でも環境校などが反射して見える色
+    float4 lightSource = float4(1.0f,1.0f,1.0f,0.0f);//光の色
+    //return lightSource *  g_texture.Sample(g_sampler, inData.uv) * inData.color;
+
+    float4 diffuse = lightSource* g_texture.Sample(g_sampler, inData.uv) * inData.color;
+    float4 ambient = lightSource *g_texture.Sample(g_sampler, inData.uv) * ambientSource;//表面色*強さ
+    return diffuse + ambient;
 }

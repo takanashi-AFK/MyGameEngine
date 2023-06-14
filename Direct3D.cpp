@@ -127,8 +127,14 @@ HRESULT Direct3D::InitShader()
 	SAFE_RELEASE(pCompilePS)
 	//ラスタライザ作成
 	D3D11_RASTERIZER_DESC rdc = {};
+
+
+	///////////ここ！！！////////////
 	rdc.CullMode = D3D11_CULL_NONE;
 	rdc.FillMode = D3D11_FILL_SOLID;
+	/////////////////////////////////
+
+
 	rdc.FrontCounterClockwise = FALSE;
 
 	hr =pDevice_->CreateRasterizerState(&rdc, &pRasterizerState_);
@@ -161,7 +167,6 @@ void Direct3D::EndDraw()
 {
 	//スワップ（バックバッファを表に表示する）
 	pSwapChain_->Present(0, 0);
-
 }
 
 
