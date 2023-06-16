@@ -7,6 +7,9 @@
 
 using namespace DirectX;
 
+
+class Sprite
+{
 //コンスタントバッファ
 struct CONSTANT_BUFFER
 {
@@ -20,14 +23,12 @@ struct VERTEX
 	XMVECTOR uv;
 };
 
-class Sprite
-{
 protected:
-	UINT64 vertexNum_;
-	std::vector<VERTEX> vertices_;
+	
+	std::vector<VERTEX>* vertices_;
 	ID3D11Buffer* pVertexBuffer_;	//頂点バッファ
-	UINT64 indexNum_;
-	std::vector<int>index_;
+	
+	std::vector<int>*index_;
 	ID3D11Buffer* pIndexBuffer_;
 	ID3D11Buffer* pConstantBuffer_;	//コンスタントバッファ
 	Texture* pTexture_;

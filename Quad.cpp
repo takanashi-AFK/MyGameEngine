@@ -58,11 +58,8 @@ HRESULT Quad::Initialize()
 	hr =Direct3D::pDevice_->CreateBuffer(&bd, &InitData, &pIndexBuffer_);
 	if (FAILED(hr))
 	{
-
 		MessageBox(nullptr, "インデックスバッファの作成に失敗しました", "エラー", MB_OK);
-
 		return hr;
-
 	}
 
 	//コンスタントバッファ作成

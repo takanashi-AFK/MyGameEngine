@@ -3,6 +3,7 @@
 #include "Direct3D.h"
 #include"Quad.h"
 #include"Camera.h"
+#include"Sprite.h"
 //定数宣言
 const char* WIN_CLASS_NAME = "SampleGame";  //ウィンドウクラス名
 const int WINDOW_WIDTH = 800;  //ウィンドウの幅
@@ -14,8 +15,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 //エントリーポイント
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, int nCmdShow)
 {
-
-
 	//ウィンドウクラス（設計図）を作成
 	WNDCLASSEX wc;
 	wc.cbSize = sizeof(WNDCLASSEX);             //この構造体のサイズ
@@ -63,9 +62,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	if (FAILED(hr))return hr;
 	Camera::Initialize();
 	Camera::SetTarget(XMFLOAT3{ 0,2,-5});
-	Quad* q = new Quad;
+	Sprite* s = new Sprite;
 
-	hr =q->Initialize();
+	hr = s->Initialize();
 	if (FAILED(hr))return hr;
 
 	//メッセージループ（何か起きるのを待つ）
@@ -110,14 +109,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			XMMATRIX ZrotXmovMat = XMMatrixTranslation(3, 0, 0) *  XMMatrixScaling(1, 3, 1) * XMMatrixRotationZ(XMConvertToRadians(-45));
 
 			XMMATRIX guruguru = XMMatrixRotationY(XMConvertToRadians(i/12));
-			q->Draw(guruguru);
+			s->Draw(mat);
 			i++;
 			Direct3D::EndDraw();
 		}
 	}
 
 	Direct3D::Release();
-	SAFE_RELEASE(q);
+	SAFE_RELEASE(s);
 	return 0;
 }
 
