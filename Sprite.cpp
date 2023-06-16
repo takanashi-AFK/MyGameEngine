@@ -3,7 +3,7 @@
 
 
 Sprite::Sprite() :
-	pVertexBuffer_(nullptr), pIndexBuffer_(nullptr), pConstantBuffer_(nullptr), pTexture_(nullptr),index_(nullptr),vertices_(nullptr)
+	pVertexBuffer_(nullptr), pIndexBuffer_(nullptr), pConstantBuffer_(nullptr), pTexture_(nullptr)
 {
 }
 
@@ -31,7 +31,7 @@ void Sprite::Draw(XMMATRIX& worldMatrix)
 
 void Sprite::InitVertexData()
 {
-     vertices_ = new std::vector<VERTEX>
+     vertices_ =
 	{
 		// 頂点情報
 	{ XMVectorSet(-1.0f,  1.0f, 0.0f, 0.0f),XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f) },
@@ -42,7 +42,7 @@ void Sprite::InitVertexData()
 }
 void Sprite::InitIndexData()
 {
-	index_ = new std::vector<int>
+	index_ = 
 	{
 	//インデックス情報
 	0,1,2,
@@ -55,14 +55,14 @@ HRESULT Sprite::CreateVertexBuffer()
 	HRESULT hr;
 	// 頂点データ用バッファの設定
 	D3D11_BUFFER_DESC bd_vertex;
-	bd_vertex.ByteWidth = sizeof(VERTEX) * vertices_->size();
+	bd_vertex.ByteWidth = sizeof(VERTEX) * vertices_.size();
 	bd_vertex.Usage = D3D11_USAGE_DEFAULT;
 	bd_vertex.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bd_vertex.CPUAccessFlags = 0;
 	bd_vertex.MiscFlags = 0;
 	bd_vertex.StructureByteStride = 0;
 	D3D11_SUBRESOURCE_DATA data_vertex;
-	data_vertex.pSysMem = &vertices_[0];
+	data_vertex.pSysMem = vertices_.data();
 	hr = Direct3D::pDevice_->CreateBuffer(&bd_vertex, &data_vertex, &pVertexBuffer_);
 	if (FAILED(hr))
 	{
@@ -77,13 +77,13 @@ HRESULT Sprite::CreateIndexBuffer()
 	// インデックスバッファを生成する
 	D3D11_BUFFER_DESC   bd;
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(int) * index_->size();
+	bd.ByteWidth = sizeof(int) * index_.size();
 	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 	bd.MiscFlags = 0;
 
 	D3D11_SUBRESOURCE_DATA InitData;
-	InitData.pSysMem = &index_[0];
+	InitData.pSysMem = index_.data();
 	InitData.SysMemPitch = 0;
 	InitData.SysMemSlicePitch = 0;
 	hr = Direct3D::pDevice_->CreateBuffer(&bd, &InitData, &pIndexBuffer_);
@@ -156,7 +156,7 @@ void Sprite::SetBufferToPipeline()
 	Direct3D::pContext_->VSSetConstantBuffers(0, 1, &pConstantBuffer_);	//頂点シェーダー用	
 	Direct3D::pContext_->PSSetConstantBuffers(0, 1, &pConstantBuffer_);	//ピクセルシェーダー用
 
-	Direct3D::pContext_->DrawIndexed(index_->size(), 0, 0);
+	Direct3D::pContext_->DrawIndexed(index_.size(), 0, 0);
 }
 
 

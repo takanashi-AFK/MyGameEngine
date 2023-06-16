@@ -25,10 +25,10 @@ struct VERTEX
 
 protected:
 	
-	std::vector<VERTEX>* vertices_;
+	std::vector<VERTEX> vertices_;
 	ID3D11Buffer* pVertexBuffer_;	//頂点バッファ
 	
-	std::vector<int>*index_;
+	std::vector<int>index_;
 	ID3D11Buffer* pIndexBuffer_;
 	ID3D11Buffer* pConstantBuffer_;	//コンスタントバッファ
 	Texture* pTexture_;
