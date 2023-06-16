@@ -4,7 +4,6 @@
 
 #include<DirectXTex.h>
 #pragma comment (lib,"DirectXTex.lib")
-
 #pragma comment( lib, "WindowsCodecs.lib" )
 using namespace DirectX;
 Texture::Texture():pSampler_(nullptr),pSRV_(nullptr)
