@@ -2,6 +2,7 @@
 #include "Direct3D.h"
 #include<DirectXMath.h>
 #include <cassert>
+#include<vector>
 
 //変数
 namespace Direct3D
@@ -101,8 +102,51 @@ HRESULT Direct3D::InitShader()
 {
 	HRESULT hr;
 	// 頂点シェーダの作成（コンパイル）
+	//ID3DBlob* pCompileVS = nullptr;
+	//hr = D3DCompileFromFile(L"Simple3D.hlsl", nullptr, nullptr, "VS", "vs_5_0", NULL, 0, &pCompileVS, NULL);
+	//if (FAILED(hr)) return hr;
+	//assert(pCompileVS != nullptr);
+	//hr =pDevice_->CreateVertexShader(pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), NULL, &pVertexShader_);
+	//if (FAILED(hr)) return hr;
+	//頂点インプットレイアウト
+	//D3D11_INPUT_ELEMENT_DESC layout[] = {
+	//	{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },	//位置
+	//	{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::XMVECTOR) , D3D11_INPUT_PER_VERTEX_DATA, 0 },//UV座標
+	//	{ "NORMAL",	0, DXGI_FORMAT_R32G32B32_FLOAT, 0, sizeof(DirectX::XMVECTOR) * 2 ,	D3D11_INPUT_PER_VERTEX_DATA, 0 },//法線
+	//};
+
+	//hr =pDevice_->CreateInputLayout(layout, 3, pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), &pVertexLayout_);
+	//if (FAILED(hr)) return hr;
+	//SAFE_RELEASE(pCompileVS)
+	//// ピクセルシェーダの作成（コンパイル）
+	//ID3DBlob* pCompilePS = nullptr;
+	//hr = D3DCompileFromFile(L"Simple3D.hlsl", nullptr, nullptr, "PS", "ps_5_0", NULL, 0, &pCompilePS, NULL);
+	//if (FAILED(hr)) return hr;
+	//assert(pCompilePS != nullptr);
+	//hr =pDevice_->CreatePixelShader(pCompilePS->GetBufferPointer(), pCompilePS->GetBufferSize(), NULL, &pPixelShader_);
+	//if (FAILED(hr)) return hr;
+	//SAFE_RELEASE(pCompilePS)
+	////ラスタライザ作成
+	//D3D11_RASTERIZER_DESC rdc = {};
+
+
+	/////////////ここ！！！////////////
+	//rdc.CullMode = D3D11_CULL_NONE;
+	//rdc.FillMode = D3D11_FILL_SOLID;
+	///////////////////////////////////
+
+
+	//rdc.FrontCounterClockwise = FALSE;
+
+	//hr =pDevice_->CreateRasterizerState(&rdc, &pRasterizerState_);
+	//if (FAILED(hr)) return hr;
+
+
+///////////////////////////////////////////////ここから2D/////////////////////////////////
+// 
+		// 頂点シェーダの作成（コンパイル）
 	ID3DBlob* pCompileVS = nullptr;
-	hr = D3DCompileFromFile(L"Simple3D.hlsl", nullptr, nullptr, "VS", "vs_5_0", NULL, 0, &pCompileVS, NULL);
+	hr = D3DCompileFromFile(L"Simple2D.hlsl", nullptr, nullptr, "VS", "vs_5_0", NULL, 0, &pCompileVS, NULL);
 	if (FAILED(hr)) return hr;
 	assert(pCompileVS != nullptr);
 	hr =pDevice_->CreateVertexShader(pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), NULL, &pVertexShader_);
@@ -111,7 +155,6 @@ HRESULT Direct3D::InitShader()
 	D3D11_INPUT_ELEMENT_DESC layout[] = {
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },	//位置
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, sizeof(DirectX::XMVECTOR) , D3D11_INPUT_PER_VERTEX_DATA, 0 },//UV座標
-		{ "NORMAL",	0, DXGI_FORMAT_R32G32B32_FLOAT, 0, sizeof(DirectX::XMVECTOR) * 2 ,	D3D11_INPUT_PER_VERTEX_DATA, 0 },//法線
 	};
 
 	hr =pDevice_->CreateInputLayout(layout, 3, pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), &pVertexLayout_);
@@ -119,7 +162,7 @@ HRESULT Direct3D::InitShader()
 	SAFE_RELEASE(pCompileVS)
 	// ピクセルシェーダの作成（コンパイル）
 	ID3DBlob* pCompilePS = nullptr;
-	hr = D3DCompileFromFile(L"Simple3D.hlsl", nullptr, nullptr, "PS", "ps_5_0", NULL, 0, &pCompilePS, NULL);
+	hr = D3DCompileFromFile(L"Simple2D.hlsl", nullptr, nullptr, "PS", "ps_5_0", NULL, 0, &pCompilePS, NULL);
 	if (FAILED(hr)) return hr;
 	assert(pCompilePS != nullptr);
 	hr =pDevice_->CreatePixelShader(pCompilePS->GetBufferPointer(), pCompilePS->GetBufferSize(), NULL, &pPixelShader_);
