@@ -14,12 +14,12 @@ Sprite::~Sprite()
 
 HRESULT Sprite::Initialize()
 {
-	InitVertexData();
+	LoadTexture();
+	InitVertexData(600,800);
 	CreateVertexBuffer();
 	InitIndexData();
 	CreateIndexBuffer();
 	CreateConstantBuffer();
-	LoadTexture();
 	return S_OK;
 }
 
@@ -29,22 +29,20 @@ void Sprite::Draw(XMMATRIX& worldMatrix)
 	SetBufferToPipeline();
 }
 
-void Sprite::InitVertexData()
+void Sprite::InitVertexData(int winH, int winW)
 {
-     vertices_ =
-	{
-		// 頂点情報
-	{ XMVectorSet(-1.0f,  1.0f, 0.0f, 0.0f),XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f) },
-	{ XMVectorSet(1.0f,  1.0f, 0.0f, 0.0f), XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f) },
-	{ XMVectorSet(1.0f, -1.0f, 0.0f, 0.0f),XMVectorSet(1.0f, 1.0f, 0.0f, 0.0f) },
-	{ XMVectorSet(-1.0f, -1.0f, 0.0f, 0.0f),XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f) },
+	vertices_ = {
+	{ XMVectorSet(-((float)image_.width / 2) / winW, ((float)image_.height / 2) / winH, 0.0f, 0.0f),XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f)},
+	{ XMVectorSet(((float)image_.width / 2) / winW, ((float)image_.height / 2) / winH, 0.0f, 0.0f),XMVectorSet(1.0f, 0.0f, 0.0f, 0.0f) },
+	{ XMVectorSet(((float)image_.width / 2) / winW,-((float)image_.height / 2) / winH, 0.0f, 0.0f),XMVectorSet(1.0f, 1.0f, 0.0f, 0.0f) },
+	{ XMVectorSet(-((float)image_.width / 2) / winW,-((float)image_.height / 2) / winH, 0.0f, 0.0f),XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f) }
 	};
+
 }
 void Sprite::InitIndexData()
 {
 	index_ = 
-	{
-	//インデックス情報
+	{//インデックス情報
 	0,1,2,
 	0,2,3
 	};
@@ -69,6 +67,8 @@ HRESULT Sprite::CreateVertexBuffer()
 		MessageBox(nullptr, "頂点バッファの作成に失敗しました", "エラー", MB_OK);
 		return hr;
 	}
+	return S_OK;
+
 }
 
 HRESULT Sprite::CreateIndexBuffer()
@@ -92,6 +92,8 @@ HRESULT Sprite::CreateIndexBuffer()
 		MessageBox(nullptr, "インデックスバッファの作成に失敗しました", "エラー", MB_OK);
 		return hr;
 	}
+	return S_OK;
+
 }
 
 HRESULT Sprite::CreateConstantBuffer()
@@ -120,6 +122,8 @@ HRESULT Sprite::LoadTexture()
 {
 	pTexture_ = new Texture;
 	pTexture_->Load("Assets/Dice.png");
+
+	image_ = pTexture_->GetMetaData();
 
 	return S_OK;
 }

@@ -3,6 +3,9 @@
 #include <string>
 #include <wrl.h>
 
+#include <DirectXTex.h>
+#pragma comment (lib, "DirectXTex.lib")
+
 using namespace Microsoft::WRL;
 using std::string;
 
@@ -10,6 +13,8 @@ class Texture
 {
 	ID3D11SamplerState* pSampler_;
 	ID3D11ShaderResourceView* pSRV_;
+	DirectX::TexMetadata metadata;
+
 public:
 	Texture();
 	~Texture();
@@ -18,4 +23,5 @@ public:
 
 	ID3D11SamplerState* GetSampler() { return pSampler_; }
 	ID3D11ShaderResourceView* GetSRV() { return pSRV_; }
-};
+	DirectX::TexMetadata GetMetaData() { return metadata; }
+}; 

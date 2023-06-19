@@ -4,6 +4,8 @@
 #include "Direct3D.h"
 #include"Texture.h"
 #include<vector>
+#include<d3d11.h>
+
 
 using namespace DirectX;
 
@@ -27,6 +29,7 @@ protected:
 	
 	std::vector<VERTEX> vertices_;
 	ID3D11Buffer* pVertexBuffer_;	//頂点バッファ
+	TexMetadata image_;
 	
 	std::vector<int>index_;
 	ID3D11Buffer* pIndexBuffer_;
@@ -41,7 +44,7 @@ public:
 	void Release();
 private:
 
-	virtual void InitVertexData();
+	virtual void InitVertexData(int winH,int winW);
 	HRESULT CreateVertexBuffer();
 
 	virtual void InitIndexData();
