@@ -63,6 +63,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	Camera::Initialize();
 	Camera::SetTarget(XMFLOAT3{ 0,2,-5});
 	Sprite* s = new Sprite;
+	
 
 	hr = s->Initialize();
 	if (FAILED(hr))return hr;

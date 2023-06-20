@@ -3,6 +3,12 @@
 #define SAFE_RELEASE(p) if(p != nullptr){ p->Release(); p = nullptr;}
 #include <d3d11.h>
 
+enum SHADER_TYPE
+{
+	SHADER_3D,
+	SHADER_2D,
+	SGADER_MAX,
+};
 
 //リンカ
 #pragma comment(lib, "d3d11.lib")
@@ -18,6 +24,10 @@ namespace Direct3D
 
 	//シェーダー準備
 	HRESULT InitShader();
+
+	HRESULT InitShader3D();
+
+	HRESULT InitShader2D();
 
 	//描画開始
 	void BeginDraw();
