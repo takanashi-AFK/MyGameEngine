@@ -9,7 +9,7 @@ Dice::~Dice()
 {
     Release();
 }
-
+//sei7d7ju
 HRESULT Dice::Initialize()
 {
     HRESULT hr;
