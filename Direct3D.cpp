@@ -102,13 +102,13 @@ HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd)
 }
 
 //シェーダー準備
-HRESULT Direct3D::InitShader()
+HRESULT Direct3D::InitShader(SHADER_TYPE type)
 {
 	//それぞれをデバイスコンテキストにセット
-	pContext_->VSSetShader(pVertexShader_, NULL, 0);//頂点シェーダー
-	pContext_->PSSetShader(pPixelShader_, NULL, 0);	//ピクセルシェーダー
-	pContext_->IASetInputLayout(pVertexLayout_);	//頂点インプットレイアウト
-	pContext_->RSSetState(pRasterizerState_);		//ラスタライザー
+	pContext_->VSSetShader(shaderBundle[type].pVertexShader_, NULL, 0);//頂点シェーダー
+	pContext_->PSSetShader(shaderBundle[type].pPixelShader_, NULL, 0);	//ピクセルシェーダー
+	pContext_->IASetInputLayout(shaderBundle[type].pVertexLayout_);	//頂点インプットレイアウト
+	pContext_->RSSetState(shaderBundle[type].pRasterizerState_);		//ラスタライザー
 
 	return S_OK;
 }
@@ -195,11 +195,11 @@ HRESULT Direct3D::InitShader2D()
 	rdc.CullMode = D3D11_CULL_NONE;
 	rdc.FillMode = D3D11_FILL_SOLID;
 	/////////////////////////////////
-
+	
 
 	rdc.FrontCounterClockwise = FALSE;
 
-	hr = pDevice_->CreateRasterizerState(&rdc, &);
+	hr = pDevice_->CreateRasterizerState(&rdc, &(shaderBundle[SHADER_2D].pRasterizerState_));
 	if (FAILED(hr)) return hr;
 }
 
@@ -229,11 +229,6 @@ void Direct3D::EndDraw()
 void Direct3D::Release()
 {
 	//解放処理
-	SAFE_RELEASE(pRasterizerState_);
-	SAFE_RELEASE(pVertexLayout_);
-	SAFE_RELEASE(pPixelShader_);
-	SAFE_RELEASE(pVertexShader_);
-
 	SAFE_RELEASE(pRenderTargetView_);
 	SAFE_RELEASE(pSwapChain_);
 	SAFE_RELEASE(pContext_);
