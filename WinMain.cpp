@@ -4,6 +4,7 @@
 #include"Quad.h"
 #include"Camera.h"
 #include"Sprite.h"
+#include"Dice.h"
 //定数宣言
 const char* WIN_CLASS_NAME = "SampleGame";  //ウィンドウクラス名
 const int WINDOW_WIDTH = 800;  //ウィンドウの幅
@@ -62,10 +63,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	if (FAILED(hr))return hr;
 	Camera::Initialize();
 	Camera::SetTarget(XMFLOAT3{ 0,2,-5});
-	Sprite* s = new Sprite;
-	
+	Dice* d = new Dice;
 
-	hr = s->Initialize();
+	hr = d->Initialize();
 	if (FAILED(hr))return hr;
 
 	//メッセージループ（何か起きるのを待つ）
@@ -110,14 +110,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			XMMATRIX ZrotXmovMat = XMMatrixTranslation(3, 0, 0) *  XMMatrixScaling(1, 3, 1) * XMMatrixRotationZ(XMConvertToRadians(-45));
 
 			XMMATRIX guruguru = XMMatrixRotationY(XMConvertToRadians(i/12));
-			s->Draw(mat);
+			d->Draw(guruguru);
 			i++;
 			Direct3D::EndDraw();
 		}
 	}
 
 	Direct3D::Release();
-	SAFE_RELEASE(s);
+	SAFE_RELEASE(d);
 	return 0;
 }
 

@@ -19,6 +19,7 @@ namespace Direct3D
 	ID3D11InputLayout* pVertexLayout_ = nullptr;	//頂点インプットレイアウト
 	ID3D11RasterizerState* pRasterizerState_ = nullptr;	//ラスタライザー
 	};
+
 	SHADER_BUNDLE shaderBundle[SHADER_MAX];
 }
 
@@ -96,8 +97,8 @@ HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd)
 	pContext_->RSSetViewports(1, &vp);
 
 	//シェーダー準備
-	hr =InitShader();
-
+	hr =InitShader(SHADER_3D);
+	hr = InitShader(SHADER_2D);
 	return S_OK;
 }
 
@@ -119,9 +120,9 @@ HRESULT Direct3D::InitShader3D()
 	// 頂点シェーダの作成（コンパイル）
 	ID3DBlob* pCompileVS = nullptr;
 	hr = D3DCompileFromFile(L"Simple3D.hlsl", nullptr, nullptr, "VS", "vs_5_0", NULL, 0, &pCompileVS, NULL);
-	if (FAILED(hr)) return hr;
 	assert(pCompileVS != nullptr);
-	hr = pDevice_->CreateVertexShader(pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), NULL, &(shaderBundle[SHADER_3D].pVertexShader));
+
+	hr = pDevice_->CreateVertexShader(pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), NULL, &(shaderBundle[SHADER_3D].pVertexShader_));
 	if (FAILED(hr)) return hr;
 	//頂点インプットレイアウト
 	D3D11_INPUT_ELEMENT_DESC layout[] = {
@@ -130,7 +131,7 @@ HRESULT Direct3D::InitShader3D()
 		{ "NORMAL",	0, DXGI_FORMAT_R32G32B32_FLOAT, 0, sizeof(DirectX::XMVECTOR) * 2 ,	D3D11_INPUT_PER_VERTEX_DATA, 0 },//法線
 	};
 
-	hr = pDevice_->CreateInputLayout(layout, 3, pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), &(shaderBundle[SHADER_3D].pVertexLayout));
+	hr = pDevice_->CreateInputLayout(layout, 3, pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), &(shaderBundle[SHADER_3D].pVertexLayout_));
 	if (FAILED(hr)) return hr;
 	SAFE_RELEASE(pCompileVS)
 		// ピクセルシェーダの作成（コンパイル）

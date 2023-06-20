@@ -7,7 +7,7 @@ enum SHADER_TYPE
 {
 	SHADER_3D,
 	SHADER_2D,
-	SGADER_MAX,
+	SHADER_MAX,
 };
 
 //ƒŠƒ“ƒJ
