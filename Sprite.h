@@ -35,7 +35,8 @@ protected:
 	ID3D11Buffer* pIndexBuffer_;
 	ID3D11Buffer* pConstantBuffer_;	//コンスタントバッファ
 	Texture* pTexture_;
-
+	int vertexNum_;
+	int indexNum_;
 public:
 	Sprite();
 	~Sprite();

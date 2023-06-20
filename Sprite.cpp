@@ -38,6 +38,9 @@ void Sprite::InitVertexData(int winH, int winW)
 	{ XMVectorSet(-((float)image_.width / 2) / winW,-((float)image_.height / 2) / winH, 0.0f, 0.0f),XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f) }
 	};
 
+
+	vertexNum_ = vertices_.size();
+
 }
 void Sprite::InitIndexData()
 {
@@ -46,6 +49,7 @@ void Sprite::InitIndexData()
 	0,1,2,
 	0,2,3
 	};
+	indexNum_ = index_.size();
 }
 
 HRESULT Sprite::CreateVertexBuffer()
@@ -53,7 +57,7 @@ HRESULT Sprite::CreateVertexBuffer()
 	HRESULT hr;
 	// 頂点データ用バッファの設定
 	D3D11_BUFFER_DESC bd_vertex;
-	bd_vertex.ByteWidth = sizeof(VERTEX) * vertices_.size();
+	bd_vertex.ByteWidth = sizeof(VERTEX) * vertexNum_;
 	bd_vertex.Usage = D3D11_USAGE_DEFAULT;
 	bd_vertex.BindFlags = D3D11_BIND_VERTEX_BUFFER;
 	bd_vertex.CPUAccessFlags = 0;
@@ -77,7 +81,7 @@ HRESULT Sprite::CreateIndexBuffer()
 	// インデックスバッファを生成する
 	D3D11_BUFFER_DESC   bd;
 	bd.Usage = D3D11_USAGE_DEFAULT;
-	bd.ByteWidth = sizeof(int) * index_.size();
+	bd.ByteWidth = sizeof(int) * indexNum_;
 	bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 	bd.CPUAccessFlags = 0;
 	bd.MiscFlags = 0;
@@ -132,6 +136,7 @@ void Sprite::PassDataToCB(DirectX::XMMATRIX& worldMatrix)
 {
 	D3D11_MAPPED_SUBRESOURCE pdata;
 	CONSTANT_BUFFER cb;
+
 	cb.matW = worldMatrix;
 	Direct3D::pContext_->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める
 	memcpy_s(pdata.pData, pdata.RowPitch, (void*)(&cb), sizeof(cb));	// データを値を送る

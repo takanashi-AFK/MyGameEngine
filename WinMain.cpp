@@ -64,8 +64,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	Camera::Initialize();
 	Camera::SetTarget(XMFLOAT3{ 0,2,-5});
 	Dice* d = new Dice;
-
 	hr = d->Initialize();
+
+	Sprite* s = new Sprite;
+	hr = s->Initialize();
+
 	if (FAILED(hr))return hr;
 
 	//メッセージループ（何か起きるのを待つ）
@@ -109,14 +112,37 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 			XMMATRIX ZrotXmovMat = XMMatrixTranslation(3, 0, 0) *  XMMatrixScaling(1, 3, 1) * XMMatrixRotationZ(XMConvertToRadians(-45));
 
+			// Quadの描画処理
+			static float angle = 0;
+			angle += 0.01f;
+
+			// 各面の回転行列を作成
+			XMMATRIX rotateMatX = XMMatrixRotationX(XMConvertToRadians(angle));
+			XMMATRIX rotateMatY = XMMatrixRotationY(XMConvertToRadians(angle));
+			XMMATRIX rotateMatZ = XMMatrixRotationZ(XMConvertToRadians(angle));
+
+			// 各面を回転させる
+			XMMATRIX matFront = rotateMatX * rotateMatY;
+			XMMATRIX matBack = rotateMatX * rotateMatY;
+			XMMATRIX matTop = rotateMatX * rotateMatZ;
+			XMMATRIX matBottom = rotateMatX * rotateMatZ;
+			XMMATRIX matLeft = rotateMatY * rotateMatZ;
+			XMMATRIX matRight = rotateMatY * rotateMatZ;
+
+			// 各面の回転行列を組み合わせる
+			XMMATRIX gebo = matFront * matBack * matTop * matBottom * matLeft * matRight;
+			
+
 			XMMATRIX guruguru = XMMatrixRotationY(XMConvertToRadians(i/12));
-			d->Draw(guruguru);
+			d->Draw(gebo);
+			s->Draw(mat);
 			i++;
 			Direct3D::EndDraw();
 		}
 	}
 
 	Direct3D::Release();
+	SAFE_RELEASE(s);
 	SAFE_RELEASE(d);
 	return 0;
 }

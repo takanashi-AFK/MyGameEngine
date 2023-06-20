@@ -23,11 +23,14 @@ namespace Direct3D
 	HRESULT Initialize(int winW, int winH, HWND hWnd);
 
 	//シェーダー準備
-	HRESULT InitShader(SHADER_TYPE type);
+	HRESULT InitShader();
 
 	HRESULT InitShader3D();
 
 	HRESULT InitShader2D();
+
+	void SetShader(SHADER_TYPE type) ;
+
 
 	//描画開始
 	void BeginDraw();

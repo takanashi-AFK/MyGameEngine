@@ -3,7 +3,7 @@
 #include<DirectXMath.h>
 #include <cassert>
 #include<vector>
-
+using namespace Direct3D;
 //変数
 namespace Direct3D
 {
@@ -97,19 +97,23 @@ HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd)
 	pContext_->RSSetViewports(1, &vp);
 
 	//シェーダー準備
-	hr =InitShader(SHADER_3D);
-	hr = InitShader(SHADER_2D);
+	hr =InitShader();
 	return S_OK;
 }
 
 //シェーダー準備
-HRESULT Direct3D::InitShader(SHADER_TYPE type)
+HRESULT Direct3D::InitShader()
 {
-	//それぞれをデバイスコンテキストにセット
-	pContext_->VSSetShader(shaderBundle[type].pVertexShader_, NULL, 0);//頂点シェーダー
-	pContext_->PSSetShader(shaderBundle[type].pPixelShader_, NULL, 0);	//ピクセルシェーダー
-	pContext_->IASetInputLayout(shaderBundle[type].pVertexLayout_);	//頂点インプットレイアウト
-	pContext_->RSSetState(shaderBundle[type].pRasterizerState_);		//ラスタライザー
+	if (FAILED(InitShader3D()))
+	{
+		return E_FAIL;
+	}
+
+	if (FAILED(InitShader2D()))
+	{
+		return E_FAIL;
+	}
+
 
 	return S_OK;
 }
@@ -147,7 +151,7 @@ HRESULT Direct3D::InitShader3D()
 
 
 	///////////ここ！！！////////////
-	rdc.CullMode = D3D11_CULL_NONE;
+	rdc.CullMode = D3D11_CULL_BACK;
 	rdc.FillMode = D3D11_FILL_SOLID;
 	/////////////////////////////////
 
@@ -204,6 +208,17 @@ HRESULT Direct3D::InitShader2D()
 	if (FAILED(hr)) return hr;
 }
 
+void Direct3D::SetShader(SHADER_TYPE type)
+{
+	
+		//それぞれをデバイスコンテキストにセット
+		pContext_->VSSetShader(shaderBundle[type].pVertexShader_, NULL, 0);//頂点シェーダー
+		pContext_->PSSetShader(shaderBundle[type].pPixelShader_, NULL, 0);	//ピクセルシェーダー
+		pContext_->IASetInputLayout(shaderBundle[type].pVertexLayout_);	//頂点インプットレイアウト
+		pContext_->RSSetState(shaderBundle[type].pRasterizerState_);		//ラスタライザー
+
+}
+
 //描画開始
 void Direct3D::BeginDraw()
 {
@@ -213,7 +228,6 @@ void Direct3D::BeginDraw()
 	//画面をクリア
 	pContext_->ClearRenderTargetView(pRenderTargetView_, clearColor);
 }
-
 
 
 //描画終了
