@@ -23,9 +23,9 @@ HRESULT Sprite::Initialize()
 	return S_OK;
 }
 
-void Sprite::Draw(XMMATRIX& worldMatrix)
+void Sprite::Draw(Transform& transform)
 {
-	PassDataToCB(worldMatrix);
+	PassDataToCB(transform.GetWorldMatrix());
 	SetBufferToPipeline();
 }
 
@@ -132,7 +132,7 @@ HRESULT Sprite::LoadTexture()
 	return S_OK;
 }
 
-void Sprite::PassDataToCB(DirectX::XMMATRIX& worldMatrix)
+void Sprite::PassDataToCB(XMMATRIX worldMatrix)
 {
 	D3D11_MAPPED_SUBRESOURCE pdata;
 	CONSTANT_BUFFER cb;

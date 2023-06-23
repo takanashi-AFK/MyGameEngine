@@ -5,6 +5,7 @@
 #include"Texture.h"
 #include<vector>
 #include<d3d11.h>
+#include"Transform.h"
 
 
 using namespace DirectX;
@@ -41,7 +42,7 @@ public:
 	Sprite();
 	~Sprite();
 	HRESULT Initialize();
-	void Draw(XMMATRIX& worldMatrix);
+	void Draw(Transform& transform);
 	void Release();
 private:
 
@@ -55,7 +56,7 @@ private:
 
 	HRESULT LoadTexture();
 
-	void PassDataToCB(DirectX::XMMATRIX& worldMatrix);
+	void PassDataToCB(XMMATRIX worldMatrix);
 	
 	void SetBufferToPipeline();
 };

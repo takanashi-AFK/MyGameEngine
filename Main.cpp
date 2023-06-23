@@ -5,6 +5,7 @@
 #include"Camera.h"
 #include"Sprite.h"
 #include"Dice.h"
+#include"Transform.h"
 //定数宣言
 const char* WIN_CLASS_NAME = "SampleGame";  //ウィンドウクラス名
 const int WINDOW_WIDTH = 800;  //ウィンドウの幅
@@ -114,7 +115,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 			// Quadの描画処理
 			static float angle = 0;
-			angle += 0.01f;
+			angle += 0.05;
 
 			// 各面の回転行列を作成
 			XMMATRIX rotateMatX = XMMatrixRotationX(XMConvertToRadians(angle));
@@ -129,13 +130,22 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			XMMATRIX matLeft = rotateMatY * rotateMatZ;
 			XMMATRIX matRight = rotateMatY * rotateMatZ;
 
+
+
+
 			// 各面の回転行列を組み合わせる
 			XMMATRIX gebo = matFront * matBack * matTop * matBottom * matLeft * matRight;
-			
-
 			XMMATRIX guruguru = XMMatrixRotationY(XMConvertToRadians(i/12));
-			d->Draw(gebo);
-			s->Draw(mat);
+
+			Transform dicetransform;
+			dicetransform.position_.y = 3.0f;
+			dicetransform.rotate_.y = angle;
+			d->Draw(dicetransform);
+
+			Transform spriteTransform;
+			spriteTransform.scale_.x = 512.0f / 800.0f;
+			spriteTransform.scale_.y = 256.0f / 600.0f;
+			s->Draw(spriteTransform);
 			i++;
 			Direct3D::EndDraw();
 		}
