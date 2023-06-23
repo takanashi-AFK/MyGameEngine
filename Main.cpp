@@ -72,7 +72,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	hr = s->Initialize();
 
 	Fbx* f = new Fbx;
-	f->Load("odden.fbx");
+	f->Load("Assets\\odden.fbx");
 
 
 	if (FAILED(hr))return hr;
