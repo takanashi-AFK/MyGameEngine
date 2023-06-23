@@ -6,6 +6,7 @@
 #include"Sprite.h"
 #include"Dice.h"
 #include"Transform.h"
+#include"Fbx.h"
 //定数宣言
 const char* WIN_CLASS_NAME = "SampleGame";  //ウィンドウクラス名
 const int WINDOW_WIDTH = 800;  //ウィンドウの幅
@@ -70,6 +71,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	Sprite* s = new Sprite;
 	hr = s->Initialize();
 
+	Fbx* f = new Fbx;
+	f->Load("odden.fbx");
+
+
 	if (FAILED(hr))return hr;
 
 	//メッセージループ（何か起きるのを待つ）
@@ -105,7 +110,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 								 0,3,0,0,
 								 0,0,1,0,
 								 0,0,0,1 };
-		//	XMMATRIX OKOKwakatta = XMMatrixTranslation(4, 0, 0) * XMMatrixScaling(1, 3, 1);
+			//XMMATRIX OKOKwakatta = XMMatrixTranslation(4, 0, 0) * XMMatrixScaling(1, 3, 1);
 			XMMATRIX MoveZoomMat = { 1,0,0,0,
 									 0,3,0,0,
 									 0,0,1,0,
@@ -144,6 +149,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			spriteTransform.scale_.x = 512.0f / 800.0f;
 			spriteTransform.scale_.y = 256.0f / 600.0f;
 			s->Draw(spriteTransform);
+			
+			Transform odenTransform;
+			odenTransform.position_.y = 3.0f;
+			odenTransform.rotate_.y = angle;
+			f->Draw(odenTransform);
 
 			Direct3D::EndDraw();
 		}
