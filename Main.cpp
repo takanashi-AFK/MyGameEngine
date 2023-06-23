@@ -131,8 +131,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			XMMATRIX matRight = rotateMatY * rotateMatZ;
 
 
-
-
 			// 各面の回転行列を組み合わせる
 			XMMATRIX gebo = matFront * matBack * matTop * matBottom * matLeft * matRight;
 			XMMATRIX guruguru = XMMatrixRotationY(XMConvertToRadians(i/12));
@@ -146,7 +144,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			spriteTransform.scale_.x = 512.0f / 800.0f;
 			spriteTransform.scale_.y = 256.0f / 600.0f;
 			s->Draw(spriteTransform);
-			i++;
+
 			Direct3D::EndDraw();
 		}
 	}
