@@ -32,6 +32,7 @@ class Fbx
 	struct VERTEX
 	{
 		XMVECTOR position;
+		XMVECTOR uv;
 	};
 	int vertexCount_;	//í∏ì_êî
 	int polygonCount_;	//É|ÉäÉSÉìêî ÇæÇ¢ÇΩÇ¢vertex*3Ç…Ç»ÇÈÇ≈ÇµÇÂÇ§
@@ -39,11 +40,10 @@ class Fbx
 
 
 	ID3D11Buffer* pVertexBuffer_;
-	ID3D11Buffer* pIndexBuffer_;
+	ID3D11Buffer** pIndexBuffer_;
 	ID3D11Buffer* pConstantBuffer_;
 	MATERIAL* pMaterialList_;
 
-	Texture* pTexture_;
 
 
 

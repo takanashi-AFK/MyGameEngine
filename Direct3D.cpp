@@ -197,7 +197,7 @@ HRESULT Direct3D::InitShader2D()
 
 
 	///////////Ç±Ç±ÅIÅIÅI////////////
-	rdc.CullMode = D3D11_CULL_NONE;
+	rdc.CullMode = D3D11_CULL_BACK;
 	rdc.FillMode = D3D11_FILL_SOLID;
 	/////////////////////////////////
 	
