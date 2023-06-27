@@ -4,13 +4,16 @@
 #include <fbxsdk.h>
 #include <string>
 #include "Transform.h"
-#include "Texture.h"
 #include"Direct3D.h"
 #include"Camera.h"
+
+class Texture;
 
 #pragma comment(lib, "LibFbxSDK-Md.lib")
 #pragma comment(lib, "LibXml2-Md.lib")
 #pragma comment(lib, "zlib-Md.lib")
+
+
 
 class Fbx
 {

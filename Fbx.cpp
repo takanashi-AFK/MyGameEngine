@@ -1,5 +1,5 @@
 #include "Fbx.h"
-
+#include"Texture.h"
 Fbx::Fbx():pVertexBuffer_(nullptr),pIndexBuffer_(nullptr), pConstantBuffer_(nullptr),vertexCount_(0),polygonCount_(0)
 {
 }
