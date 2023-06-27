@@ -14,6 +14,12 @@
 
 class Fbx
 {
+	//マテリアル
+	struct MATERIAL
+	{
+		Texture* pTexture;
+	};
+
 	struct CONSTANT_BUFFER
 	{
 		XMMATRIX	matWVP;
@@ -26,10 +32,13 @@ class Fbx
 	};
 	int vertexCount_;	//頂点数
 	int polygonCount_;	//ポリゴン数 だいたいvertex*3になるでしょう
+	int materialCount_;	//マテリアルの個数
+
 
 	ID3D11Buffer* pVertexBuffer_;
 	ID3D11Buffer* pIndexBuffer_;
 	ID3D11Buffer* pConstantBuffer_;
+	MATERIAL* pMaterialList_;
 
 	Texture* pTexture_;
 
@@ -43,6 +52,7 @@ public:
 	void    Release();
 	void	InitVertex(fbxsdk::FbxMesh* mesh);
 	void	InitIndex(fbxsdk::FbxMesh* mesh);
+	void	InitMaterial(fbxsdk::FbxNode* pNode);
 	void	IntConstantBuffer();
 
 	void	SetBufferToPipeline();

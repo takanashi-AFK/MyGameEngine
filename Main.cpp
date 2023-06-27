@@ -7,6 +7,7 @@
 #include"Dice.h"
 #include"Transform.h"
 #include"Fbx.h"
+
 //定数宣言
 const char* WIN_CLASS_NAME = "SampleGame";  //ウィンドウクラス名
 const int WINDOW_WIDTH = 800;  //ウィンドウの幅
@@ -65,11 +66,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	if (FAILED(hr))return hr;
 	Camera::Initialize();
 	Camera::SetTarget(XMFLOAT3{ 0,2,-5});
-	Dice* d = new Dice;
-	hr = d->Initialize();
+	//Dice* d = new Dice;
+	//hr = d->Initialize();
 
-	Sprite* s = new Sprite;
-	hr = s->Initialize();
+	//Sprite* s = new Sprite;
+	//hr = s->Initialize();
 
 	Fbx* f = new Fbx;
 	f->Load("Assets\\odden.fbx");
@@ -140,18 +141,17 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			XMMATRIX gebo = matFront * matBack * matTop * matBottom * matLeft * matRight;
 			XMMATRIX guruguru = XMMatrixRotationY(XMConvertToRadians(i/12));
 
-			Transform dicetransform;
-			dicetransform.position_.y = 3.0f;
-			dicetransform.rotate_.y = angle;
-			d->Draw(dicetransform);
+			//Transform dicetransform;
+			//dicetransform.position_.y = 3.0f;
+			//dicetransform.rotate_.y = angle;
+			//d->Draw(dicetransform);
 
-			Transform spriteTransform;
-			spriteTransform.scale_.x = 512.0f / 800.0f;
-			spriteTransform.scale_.y = 256.0f / 600.0f;
-			s->Draw(spriteTransform);
-			
+			//Transform spriteTransform;
+			//spriteTransform.scale_.x = 512.0f / 800.0f;
+			//spriteTransform.scale_.y = 256.0f / 600.0f;
+			//s->Draw(spriteTransform);
 			Transform odenTransform;
-			odenTransform.position_.y = 3.0f;
+			odenTransform.position_.y = 0.0f;
 			odenTransform.rotate_.y = angle;
 			f->Draw(odenTransform);
 
@@ -160,8 +160,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	}
 
 	Direct3D::Release();
-	SAFE_RELEASE(s);
-	SAFE_RELEASE(d);
+	//SAFE_RELEASE(s);
+	//SAFE_RELEASE(d);
+	SAFE_RELEASE(f);
 	return 0;
 }
 
