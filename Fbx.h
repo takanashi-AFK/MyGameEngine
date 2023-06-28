@@ -6,6 +6,7 @@
 #include "Transform.h"
 #include"Direct3D.h"
 #include"Camera.h"
+#include<vector>
 
 class Texture;
 
@@ -33,11 +34,12 @@ class Fbx
 	{
 		XMVECTOR position;
 		XMVECTOR uv;
+		XMVECTOR normal;
 	};
 	int vertexCount_;	//頂点数
 	int polygonCount_;	//ポリゴン数 だいたいvertex*3になるでしょう
 	int materialCount_;	//マテリアルの個数
-
+	int *indexCount_;
 
 	ID3D11Buffer* pVertexBuffer_;
 	ID3D11Buffer** pIndexBuffer_;
@@ -58,10 +60,8 @@ public:
 	void	InitMaterial(fbxsdk::FbxNode* pNode);
 	void	IntConstantBuffer();
 
-	void	SetBufferToPipeline();
-	void	PassDataToCB(Transform transform);
+	void	SetBufferToPipeline(Transform transform);
 
-	HRESULT LoadTexture();
 
 
 };
