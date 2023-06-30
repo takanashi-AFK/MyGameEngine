@@ -157,7 +157,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			f->Draw(odenTransform);
 
 			Input::Update();
-			
+			if (Input::IsKey(DIK_ESCAPE))
+			{
+				PostQuitMessage(0);
+			}
 			Direct3D::EndDraw();
 		}
 	}
