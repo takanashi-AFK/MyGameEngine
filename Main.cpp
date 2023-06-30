@@ -7,6 +7,7 @@
 #include"Dice.h"
 #include"Transform.h"
 #include"Fbx.h"
+#include"Input.h"
 
 //定数宣言
 const char* WIN_CLASS_NAME = "SampleGame";  //ウィンドウクラス名
@@ -61,7 +62,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 	HRESULT hr;
 	//Direct3D初期化
-
+	Input::Initialize(hWnd);
 	hr = Direct3D::Initialize(winW, winH, hWnd);	
 	if (FAILED(hr))return hr;
 	Camera::Initialize();
@@ -155,10 +156,12 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			odenTransform.rotate_.y = angle;
 			f->Draw(odenTransform);
 
+			Input::Update();
+			
 			Direct3D::EndDraw();
 		}
 	}
-
+	Input::Release();
 	Direct3D::Release();
 	//SAFE_RELEASE(s);
 	//SAFE_RELEASE(d);
