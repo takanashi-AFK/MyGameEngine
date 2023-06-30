@@ -23,7 +23,7 @@ namespace Input
 
 	bool IsKey(int keyCode)
 	{
-		if (keyState[keyCode] == 128)
+		if (keyState[keyCode] & 0b10000000)
 		{
 			return true;
 		}
