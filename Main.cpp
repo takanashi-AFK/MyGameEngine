@@ -99,6 +99,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			Direct3D::EndDraw();
 		}
 	}
+	SAFE_RELEASE(pRootJob);
 	pRootJob->Release();
 	Input::Release();
 	Direct3D::Release();
