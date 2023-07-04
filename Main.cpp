@@ -1,13 +1,8 @@
 ﻿//インクルード
 #include <Windows.h>
-#include "Direct3D.h"
-#include"Quad.h"
-#include"Camera.h"
-#include"Sprite.h"
-#include"Dice.h"
-#include"Transform.h"
-#include"Fbx.h"
-#include"Input.h"
+#include "Engine/Direct3D.h"
+#include"Engine/Camera.h"
+#include"Engine/Input.h"
 
 //定数宣言
 const char* WIN_CLASS_NAME = "SampleGame";  //ウィンドウクラス名
@@ -67,15 +62,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	if (FAILED(hr))return hr;
 	Camera::Initialize();
 	Camera::SetTarget(XMFLOAT3{ 0,2,-5});
-	//Dice* d = new Dice;
-	//hr = d->Initialize();
-
-	//Sprite* s = new Sprite;
-	//hr = s->Initialize();
-
-	Fbx* f = new Fbx;
-	f->Load("Assets\\odden.fbx");
-
+	
 
 	if (FAILED(hr))return hr;
 
@@ -95,94 +82,20 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 		//メッセージなし
 		else
 		{
+			//↓ゲームの処理↓//
+			//カメラ処理
 			Camera::Update();
-			//ゲームの処理
-			Direct3D::BeginDraw();
 
-			//描画処理
-			XMMATRIX mat = XMMatrixRotationY(XMConvertToRadians(45));
-			//Y軸で45°回転
-			XMMATRIX MoveMat = { 1,0,0,0,
-							 	 0,1,0,0,
-								 0,0,1,0,
-								 4,0,0,1 };
-			//XMMATRIX ZoomMat = XMMatrixScaling(1, 3, 1);
-
-			XMMATRIX ZoomMat = { 1,0,0,0,
-								 0,3,0,0,
-								 0,0,1,0,
-								 0,0,0,1 };
-			//XMMATRIX OKOKwakatta = XMMatrixTranslation(4, 0, 0) * XMMatrixScaling(1, 3, 1);
-			XMMATRIX MoveZoomMat = { 1,0,0,0,
-									 0,3,0,0,
-									 0,0,1,0,
-									 4,0,0,1 };
-
-			XMMATRIX ZrotXmovMat = XMMatrixTranslation(3, 0, 0) *  XMMatrixScaling(1, 3, 1) * XMMatrixRotationZ(XMConvertToRadians(-45));
-
-			// Quadの描画処理
-			static float angle = 0;
-			angle += 0.05;
-
-			// 各面の回転行列を作成
-			XMMATRIX rotateMatX = XMMatrixRotationX(XMConvertToRadians(angle));
-			XMMATRIX rotateMatY = XMMatrixRotationY(XMConvertToRadians(angle));
-			XMMATRIX rotateMatZ = XMMatrixRotationZ(XMConvertToRadians(angle));
-
-			// 各面を回転させる
-			XMMATRIX matFront = rotateMatX * rotateMatY;
-			XMMATRIX matBack = rotateMatX * rotateMatY;
-			XMMATRIX matTop = rotateMatX * rotateMatZ;
-			XMMATRIX matBottom = rotateMatX * rotateMatZ;
-			XMMATRIX matLeft = rotateMatY * rotateMatZ;
-			XMMATRIX matRight = rotateMatY * rotateMatZ;
-
-
-			// 各面の回転行列を組み合わせる
-			XMMATRIX gebo = matFront * matBack * matTop * matBottom * matLeft * matRight;
-			XMMATRIX guruguru = XMMatrixRotationY(XMConvertToRadians(i/12));
-
-			//Transform dicetransform;
-			//dicetransform.position_.y = 3.0f;
-			//dicetransform.rotate_.y = angle;
-			//d->Draw(dicetransform);
-
-			//Transform spriteTransform;
-			//spriteTransform.scale_.x = 512.0f / 800.0f;
-			//spriteTransform.scale_.y = 256.0f / 600.0f;
-			//s->Draw(spriteTransform);
-
+			//input処理
 			Input::Update();
-			static Transform odenTransform;
-			odenTransform.rotate_.y = angle;
-			if (Input::IsKey(DIK_RIGHT))
-			{
-				odenTransform.position_.x +=0.02;
-			}
-			if (Input::IsKey(DIK_LEFT))
-			{
-				odenTransform.position_.x -= 0.02;
-			}
 
-			f->Draw(odenTransform);
-			if (Input::IsKeyUp(DIK_ESCAPE))
-			{
-				static int cnt = 0;
-				cnt++;
-				if (cnt >= 3)
-				{
-					PostQuitMessage(0);
-				}
-			}
-
+			//↓描画↓//
+			Direct3D::BeginDraw();
 			Direct3D::EndDraw();
 		}
 	}
 	Input::Release();
 	Direct3D::Release();
-	//SAFE_RELEASE(s);
-	//SAFE_RELEASE(d);
-	SAFE_RELEASE(f);
 	return 0;
 }
 
