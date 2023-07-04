@@ -54,12 +54,12 @@ namespace Input
 
 	XMVECTOR GetMousePosition()
 	{
-		return mouse_Position;;
+		return mousePosition;;
 	}
 
 	void SetMousePosition(int x, int y)
 	{
-		mouse_Position = XMVectorSet((float)x, (float)y, 0, 0);
+		mousePosition = XMVectorSet((float)x, (float)y, 0, 0);
 	}
 
 	void Release()

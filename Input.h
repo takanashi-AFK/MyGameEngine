@@ -21,5 +21,5 @@ namespace Input
 
 
 	void Release();
-	XMVECTOR mouse_Position;
+	XMVECTOR mousePosition;
 };
