@@ -157,9 +157,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			f->Draw(odenTransform);
 
 			Input::Update();
-			if (Input::IsKey(DIK_ESCAPE))
+			if (Input::IsKeyUp(DIK_ESCAPE))
 			{
-				PostQuitMessage(0);
+				static int cnt = 0;
+				cnt++;
+				if (cnt >= 3)
+				{
+					PostQuitMessage(0);
+				}
 			}
 			Direct3D::EndDraw();
 		}
@@ -177,6 +182,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
+	case WM_MOUSEMOVE:
+		Input::SetMousePosition(LOWORD(lParam), HIWORD(lParam));
+		return 0;
 	case WM_DESTROY:
 		PostQuitMessage(0);  //プログラム終了
 		return 0;
