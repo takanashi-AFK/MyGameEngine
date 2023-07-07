@@ -65,7 +65,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	Camera::Initialize();
 	Camera::SetTarget(XMFLOAT3{ 0,2,-5});
 	pRootJob = new RootJob;
-	pRootJob->Initialize();
+	pRootJob->InitializeSub();
 
 	if (FAILED(hr))return hr;
 
@@ -91,16 +91,18 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 			//input処理
 			Input::Update();
-			pRootJob->Update();
+			pRootJob->UpdateSub();
 
 			//↓描画↓//
-			pRootJob->Draw();
 			Direct3D::BeginDraw();
+
+			pRootJob->DrawSub();
+			
+
 			Direct3D::EndDraw();
 		}
 	}
-	SAFE_RELEASE(pRootJob);
-	pRootJob->Release();
+	pRootJob->ReleaseSub();
 	Input::Release();
 	Direct3D::Release();
 	return 0;

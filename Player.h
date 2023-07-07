@@ -4,7 +4,7 @@
 class Fbx;
 
 //プレイシーンを管理するクラス
-class PlayScene : public GameObject
+class Player : public GameObject
 {
 
 private:
@@ -13,7 +13,7 @@ private:
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
-	PlayScene(GameObject* parent);
+	Player(GameObject* parent);
 
 	//初期化
 	void Initialize() override;

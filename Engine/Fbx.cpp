@@ -67,9 +67,6 @@ void Fbx::Draw(Transform& transform)
 	//Direct3D::pContext_->DrawIndexed(vertexCount_, 0, 0);
 }
 
-void Fbx::Release()
-{
-}
 
 void Fbx::InitVertex(fbxsdk::FbxMesh* mesh)
 {
@@ -278,3 +275,7 @@ void Fbx::SetBufferToPipeline(Transform transform)
 	}
 }
 
+
+void Fbx::Release()
+{
+}
