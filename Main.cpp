@@ -8,7 +8,6 @@
 
 #pragma comment(lib, "winmm.lib")
 
-
 //定数宣言
 const char* WIN_CLASS_NAME = "SampleGame";  //ウィンドウクラス名
 const int WINDOW_WIDTH = 800;  //ウィンドウの幅

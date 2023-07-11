@@ -1,5 +1,7 @@
 #include "Player.h"
 #include"Engine/Fbx.h"
+#include"Engine/Input.h"
+#include"TestObj.h"
 //コンストラクタ
 Player::Player(GameObject* parent)
 	: GameObject(parent, "Player"), pFbx(nullptr)
@@ -12,12 +14,16 @@ void Player::Initialize()
 	pFbx = new Fbx;
 
 	pFbx->Load("Assets/odden.fbx");
+	Instantiate<TestObj>(this);
 }
 
 //更新
 void Player::Update()
 {
-	this->transform_.rotate_.y += 1;
+	if (Input::IsKeyUp(DIK_L))
+	{
+		KillMe();
+	}
 }
 
 //描画

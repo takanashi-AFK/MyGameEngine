@@ -45,7 +45,7 @@ namespace Input
 
 	bool IsKeyUp(int keyCode)
 	{
-		if (!IsKey(keyCode) && keyState[keyCode] & 0x80)
+		if (!IsKey(keyCode) && prevKeyState[keyCode] & 0x80)
 		{
 			return true;
 		}

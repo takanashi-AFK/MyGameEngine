@@ -1,6 +1,6 @@
 #include "GameObject.h"
 
-GameObject::GameObject()
+GameObject::GameObject() :isDead_(false)
 {
 }
 
@@ -37,6 +37,18 @@ void GameObject::UpdateSub()
 	{
 		(*itr)->UpdateSub();
 	}
+	for (auto itr = childList_.begin(); itr != childList_.end();)
+	{
+		if ((*itr)->isDead_) {
+			(*itr)->ReleaseSub();
+			delete *itr;
+			itr = childList_.erase(itr);
+		}
+		else
+		{
+			itr++;
+		}
+	}
 }
 
 void GameObject::ReleaseSub()
@@ -46,4 +58,9 @@ void GameObject::ReleaseSub()
 	{
 		(*itr)->ReleaseSub();
 	}
+}
+
+void GameObject::KillMe()
+{
+	isDead_ = true;
 }
