@@ -97,6 +97,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 			static DWORD startTime = timeGetTime();
 
 			DWORD nowTime = timeGetTime();
+			static DWORD lastUpdateTime = nowTime;
+
 			char str[16];
 			//1秒に１回カウントFPSがリセットされるから、
 			//FPSが割り出せる
@@ -105,6 +107,12 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 				countFps = 0;
 				startTime = nowTime;
 			}
+			if (nowTime - lastUpdateTime <= 1000.0f / 60)
+			{
+				continue;
+			}
+			lastUpdateTime = nowTime;
+
 			countFps++;
 			//今の時間-スタート時の時間が、スタート時から今までの時間になるから
 			//プログラム開始してから、になる
