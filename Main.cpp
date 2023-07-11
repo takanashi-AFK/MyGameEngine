@@ -89,7 +89,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 		//メッセージなし
 		else
 		{
-
+			timeBeginPeriod(1);
 			static DWORD countFps = 0;
 			//FPS表示 timeGetTime関数はPCを起動してから現在何msたったか
 
@@ -98,7 +98,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 			DWORD nowTime = timeGetTime();
 			static DWORD lastUpdateTime = nowTime;
-
+			timeEndPeriod(1);
 			char str[16];
 			//1秒に１回カウントFPSがリセットされるから、
 			//FPSが割り出せる
