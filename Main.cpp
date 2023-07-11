@@ -1,9 +1,13 @@
 ﻿//インクルード
 #include <Windows.h>
+#include <stdlib.h>
 #include "Engine/Direct3D.h"
 #include"Engine/Camera.h"
 #include"Engine/Input.h"
 #include"Engine/RootJob.h"
+
+#pragma comment(lib, "winmm.lib")
+
 
 //定数宣言
 const char* WIN_CLASS_NAME = "SampleGame";  //ウィンドウクラス名
@@ -85,6 +89,28 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 		//メッセージなし
 		else
 		{
+
+			static DWORD countFps = 0;
+			//FPS表示 timeGetTime関数はPCを起動してから現在何msたったか
+
+			//開始した時間を静的に保持、
+			static DWORD startTime = timeGetTime();
+
+			DWORD nowTime = timeGetTime();
+			char str[16];
+			//1秒に１回カウントFPSがリセットされるから、
+			//FPSが割り出せる
+			if (nowTime - startTime >= 1000)
+			{
+				countFps = 0;
+				startTime = nowTime;
+			}
+			countFps++;
+			//今の時間-スタート時の時間が、スタート時から今までの時間になるから
+			//プログラム開始してから、になる
+
+			wsprintf(str, "%u", countFps);
+			SetWindowText(hWnd, str);
 			//↓ゲームの処理↓//
 			//カメラ処理
 			Camera::Update();
