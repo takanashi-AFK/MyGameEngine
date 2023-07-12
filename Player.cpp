@@ -11,19 +11,26 @@ Player::Player(GameObject* parent)
 //èâä˙âª
 void Player::Initialize()
 {
+
 	pFbx = new Fbx;
 
 	pFbx->Load("Assets/odden.fbx");
-	Instantiate<TestObj>(this);
+	
+	GameObject* pCo2 = Instantiate<TestObj>(this);
+	pCo2->SetPosition(XMFLOAT3(2,1,0));
+	GameObject * pkasu = Instantiate<TestObj>(this);
+	pkasu->SetPosition(XMFLOAT3(-2, 1, 0));
 }
 
 //çXêV
 void Player::Update()
 {
-	if (Input::IsKeyUp(DIK_L))
+	if (Input::IsKey(DIK_L))
 	{
 		KillMe();
 	}
+
+	transform_.rotate_.y++;
 }
 
 //ï`âÊ

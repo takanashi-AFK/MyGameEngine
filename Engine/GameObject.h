@@ -29,12 +29,11 @@ public:
 	template <class T>
 	GameObject* Instantiate(GameObject* parent)
 	{
-		T* p;
-
-		p = new T(parent);
-		p->Initialize();
-		childList_.push_back(p);
-		return p;
+		T* pObject;
+		pObject = new T(parent);
+		pObject->Initialize();
+		parent->childList_.push_back(pObject);
+		return(pObject);
 	}
 
 	void InitializeSub();
@@ -42,4 +41,7 @@ public:
 	void DrawSub();
 	void ReleaseSub();
 	void KillMe();
+
+	void SetPosition(XMFLOAT3 _pos);
+	void SetScale(XMFLOAT3 _scl);
 };

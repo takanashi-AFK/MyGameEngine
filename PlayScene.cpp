@@ -17,6 +17,7 @@ void PlayScene::Initialize()
 	//pPlayer -> Initialize();
 	//childList_.push_back(pPlayer);//PlayScene‚ÌŽq‚Æ‚µ‚ÄPlayer‚ð“o˜^
 	Instantiate<Player>(this);
+
 	
 }
 
