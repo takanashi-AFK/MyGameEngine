@@ -9,7 +9,7 @@ class TestObj : public GameObject
 
 private:
 	Fbx* pFbx1;
-
+	int hModel_;
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）

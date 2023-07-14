@@ -9,6 +9,7 @@ class Player : public GameObject
 
 private:
 	Fbx* pFbx;
+	int hModel_;
 
 public:
 	//コンストラクタ
