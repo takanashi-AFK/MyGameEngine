@@ -4,6 +4,8 @@
 #include <string>
 #include "Transform.h"
 
+class SphereCollider;
+
 class GameObject
 {
 private:
@@ -15,6 +17,7 @@ protected:
 	GameObject*				pParent_;
 	std::string				objectName_;
 	bool					isDead_;
+	SphereCollider*			pCollider_;
 
 public:
 	GameObject();
@@ -50,6 +53,9 @@ public:
 	/// <param name="_pos"></param>
 	GameObject* GetRootJob();
 	GameObject* FindObject(std::string _objName);
+	void AddCollider(SphereCollider* _pCollider);
+	void Collision(GameObject* _pTarget);
+	void RoundRobin(GameObject* _pTarget);
 
 	void SetPosition(XMFLOAT3 _pos);
 	void SetScale(XMFLOAT3 _scl);
