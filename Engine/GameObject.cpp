@@ -68,12 +68,40 @@ void GameObject::KillMe()
 	isDead_ = true;
 }
 
+GameObject* GameObject::FindChildObject(std::string _objName)
+{
+	if (_objName == this->objectName_) {
+		return this;
+	}
+	else {
+		for (auto itr:childList_) {
+			GameObject* obj  = itr->FindChildObject(_objName);
+			if (obj != nullptr)
+			{
+				return obj;
+			}
+		}
+	}
+}
 
+GameObject* GameObject::GetRootJob()
+{
+	if(pParent_ ==  nullptr)
+	return this;
+
+	return pParent_->GetRootJob();
+}
 
 void GameObject::SetPosition(XMFLOAT3 _pos)
 {
 	transform_.position_ = _pos;
 
+}
+
+GameObject* GameObject::FindObject(std::string _objName)
+{
+
+	return GetRootJob()->FindChildObject(_objName);
 }
 
 void GameObject::SetScale(XMFLOAT3 _scl)

@@ -42,6 +42,15 @@ public:
 	void ReleaseSub();
 	void KillMe();
 
+	GameObject* FindChildObject(std::string _objName);
+
+	/// <summary>
+	/// 再起呼び出しでRootJobを探して、そのアドレスを返す
+	/// </summary>
+	/// <param name="_pos"></param>
+	GameObject* GetRootJob();
+	GameObject* FindObject(std::string _objName);
+
 	void SetPosition(XMFLOAT3 _pos);
 	void SetScale(XMFLOAT3 _scl);
 };
