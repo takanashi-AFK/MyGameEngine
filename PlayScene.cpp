@@ -2,6 +2,7 @@
 #include"Engine/Fbx.h"
 #include"TestObj.h"
 #include"Stage.h"
+#include"Controller.h"
 //コンストラクタ
 PlayScene::PlayScene(GameObject* parent)
 	: GameObject(parent, "PlayScene"),pFbx(nullptr)
@@ -11,8 +12,8 @@ PlayScene::PlayScene(GameObject* parent)
 //初期化
 void PlayScene::Initialize()
 {
+	Instantiate<Controller>(this);
 	Instantiate<Stage>(this);
-	
 }
 
 //更新

@@ -1,14 +1,15 @@
 #pragma once
 #include "Engine/GameObject.h"
-class Stage : public GameObject
+class Controller : public GameObject
 {
 private:
 	int hModel_;
-
+	XMFLOAT3 CamPos = { 0,5,-5 };
+	XMFLOAT3 CamTarget = { 0,0,0 };
 public:
 	//コンストラクタ
 	//引数：parent 
-	Stage(GameObject* parent);
+	Controller(GameObject* parent);
 
 	//初期化
 	void Initialize() override;
