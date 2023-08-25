@@ -1,6 +1,7 @@
 #include "TestScene.h"
 #include"Engine/SceneManager.h"
 #include"Engine/Input.h"
+#include"Stage.h"
 TestScene::TestScene(GameObject* parent)
 	:GameObject(parent,"TestScene")
 {
@@ -8,15 +9,11 @@ TestScene::TestScene(GameObject* parent)
 
 void TestScene::Initialize()
 {
+	
 }
 
 void TestScene::Update()
 {
-	//GameObject* nanikasi = FindObject("SceneManager");
-	if (Input::IsKey(DIK_SPACE)) {
-	SceneManager* pSceneManager = (SceneManager*)FindObject("SceneManager");
-	pSceneManager->ChangeScene(SCENE_ID_PLAY);
-	}
 }
 
 void TestScene::Draw()
