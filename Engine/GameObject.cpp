@@ -92,6 +92,32 @@ GameObject* GameObject::GetRootJob()
 	return pParent_->GetRootJob();
 }
 
+void GameObject::AddCollider(SphereCollider* pCollider)
+{
+	pCollider_ = pCollider;
+
+}
+
+void GameObject::Collision(GameObject* _pTarget)
+{
+	if (pCollider_ == nullptr)
+		return;
+	//ターゲットにコライダーがアタッチされていない
+	if (_pTarget == this || _pTarget->pCollider_ == nullptr) return;
+
+	//もし、自分のコライダーとターゲットがぶつかっていたら...
+	float dist = GetVectorLength(XMVectorSubtract(XMLoadFloat3(&_pTarget->transform_.position_), XMLoadFloat3(&this->transform_.position_)));
+	float rDist = (this->pCollider_->GetRadius() + _pTarget->pCollider_->GetRadius()) * (this->pCollider_->GetRadius() + _pTarget->pCollider_->GetRadius());
+	if (dist <= rDist) {
+		OnCollision(_pTarget);
+	}
+	
+}
+
+void GameObject::RoundRobin(GameObject* _pTarget)
+{
+}
+
 void GameObject::SetPosition(XMFLOAT3 _pos)
 {
 	transform_.position_ = _pos;
@@ -107,4 +133,14 @@ GameObject* GameObject::FindObject(std::string _objName)
 void GameObject::SetScale(XMFLOAT3 _scl)
 {
 	transform_.scale_ = _scl;
+}
+
+float GameObject::GetVectorLength(const XMVECTOR& vector)
+{
+	DirectX::XMVECTOR squaredLength = DirectX::XMVector3LengthSq(vector);
+
+	float length;
+	DirectX::XMStoreFloat(&length, DirectX::XMVectorSqrt(squaredLength));
+
+	return length;
 }

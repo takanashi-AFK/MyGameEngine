@@ -56,7 +56,10 @@ public:
 	void AddCollider(SphereCollider* _pCollider);
 	void Collision(GameObject* _pTarget);
 	void RoundRobin(GameObject* _pTarget);
+	float GetVectorLength(const XMVECTOR& vector);
+	virtual void OnCollision(GameObject*) {};
 
 	void SetPosition(XMFLOAT3 _pos);
 	void SetScale(XMFLOAT3 _scl);
+
 };
