@@ -14,10 +14,10 @@ SceneManager::~SceneManager()
 
 void SceneManager::Initialize()
 {
-	currentSceneID = SCENE_ID_TEST;
+	currentSceneID = SCENE_ID_PLAY;
 	nextSceneID = currentSceneID;
 
-	Instantiate<TestScene>(this);
+	Instantiate<PlayScene>(this);
 }
 
 void SceneManager::Update()

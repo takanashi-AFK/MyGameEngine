@@ -3,6 +3,7 @@
 #include <list>
 #include <string>
 #include "Transform.h"
+#include "Direct3D.h"
 
 
 class SphereCollider;
