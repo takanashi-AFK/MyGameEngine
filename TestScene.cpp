@@ -13,7 +13,7 @@ void TestScene::Initialize()
 void TestScene::Update()
 {
 	//GameObject* nanikasi = FindObject("SceneManager");
-	if (Input::IsKey(DIK_SPACE)) {
+	if (Input::IsKeyDown(DIK_SPACE)) {
 	SceneManager* pSceneManager = (SceneManager*)FindObject("SceneManager");
 	pSceneManager->ChangeScene(SCENE_ID_PLAY);
 	}

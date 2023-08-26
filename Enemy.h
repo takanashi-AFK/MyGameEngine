@@ -1,10 +1,12 @@
 #pragma once
 #include "Engine/GameObject.h"
 #include "Engine/Fbx.h"
+#include"Engine/SphereCollider.h"
+#include"Engine/Model.h"
 class Enemy :public GameObject
 {
 private:
-	Fbx *pFbx;
+	int hModel_;
 public:
 	Enemy(GameObject* parent);
 	~Enemy();
@@ -13,6 +15,7 @@ public:
 	void Update()	 override;
 	void Draw()		 override;
 	void Release()	 override;
+	void OnCollision(GameObject* _pTarget) override;
 };
 
 

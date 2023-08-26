@@ -1,4 +1,5 @@
 #include "GameObject.h"
+#include"SphereCollider.h"
 
 GameObject::GameObject() :isDead_(false),pParent_(nullptr)
 {
@@ -35,6 +36,8 @@ void GameObject::InitializeSub()
 void GameObject::UpdateSub()
 {
 	Update();
+
+	RoundRobin(GetRootJob());
 	for (auto itr = childList_.begin(); itr != childList_.end(); itr++)
 	{
 		(*itr)->UpdateSub();
@@ -98,10 +101,18 @@ void GameObject::AddCollider(SphereCollider* pCollider)
 
 }
 
+float GetVectorLength(const XMVECTOR& vector)
+{
+	DirectX::XMVECTOR squaredLength = DirectX::XMVector3LengthSq(vector);
+
+	float length;
+	DirectX::XMStoreFloat(&length, DirectX::XMVectorSqrt(squaredLength));
+
+	return length;
+}
+
 void GameObject::Collision(GameObject* _pTarget)
 {
-	if (pCollider_ == nullptr)
-		return;
 	//ターゲットにコライダーがアタッチされていない
 	if (_pTarget == this || _pTarget->pCollider_ == nullptr) return;
 
@@ -111,11 +122,16 @@ void GameObject::Collision(GameObject* _pTarget)
 	if (dist <= rDist) {
 		OnCollision(_pTarget);
 	}
-	
 }
 
 void GameObject::RoundRobin(GameObject* _pTarget)
 {
+	if (pCollider_ == nullptr)return;
+
+	if (_pTarget->pCollider_ != nullptr)Collision(_pTarget);
+
+	//自分の子供全部とターゲット
+	for (auto itr : _pTarget->childList_)RoundRobin(itr);
 }
 
 void GameObject::SetPosition(XMFLOAT3 _pos)
@@ -135,12 +151,3 @@ void GameObject::SetScale(XMFLOAT3 _scl)
 	transform_.scale_ = _scl;
 }
 
-float GameObject::GetVectorLength(const XMVECTOR& vector)
-{
-	DirectX::XMVECTOR squaredLength = DirectX::XMVector3LengthSq(vector);
-
-	float length;
-	DirectX::XMStoreFloat(&length, DirectX::XMVectorSqrt(squaredLength));
-
-	return length;
-}

@@ -18,7 +18,8 @@ void TestObj::Initialize()
 	transform_.scale_.z = 0.2f;
 
 	transform_.rotate_.x = 90;
-
+	SphereCollider* collision = new SphereCollider(1.0f);
+	AddCollider(collision);
 }
 
 //çXêV
@@ -47,4 +48,9 @@ void TestObj::Draw()
 void TestObj::Release()
 {
 
+}
+
+void TestObj::OnCollision(GameObject* _pTarget)
+{
+	int a = 2;
 }
