@@ -69,7 +69,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	Camera::Initialize();
 	Camera::SetTarget(XMFLOAT3{ 0,2,-5});
 	pRootJob = new RootJob(nullptr);//木構造の一番上を表すため、nullptr
-	pRootJob->InitializeSub();
+	pRootJob->Initialize();
 
 	if (FAILED(hr))return hr;
 
