@@ -48,7 +48,6 @@ void Stage::Initialize()
 			table_[x][z] = (x+z)%5;
 		}
 	}
-	table_[7][7] = BLOCK_DEFAULT;
 }
 
 void Stage::Update()
