@@ -74,7 +74,7 @@ void Controller::Update()
     XMFLOAT3 camPos;
     XMStoreFloat3(&camPos, vPos + vCam);
     Camera::SetPosition(XMLoadFloat3(&camPos));
-    Camera::SetTarget(XMLoadFloat3(&transform_.position_));        //カメラの焦点はプレイヤーの位置
+    Camera::SetTarget(XMLoadFloat3(&transform_.position_));;       //カメラの焦点はプレイヤーの位置
 
 }
 
