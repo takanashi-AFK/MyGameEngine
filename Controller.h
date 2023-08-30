@@ -3,7 +3,6 @@
 class Controller : public GameObject
 {
 private:
-	int hModel_;
 	XMFLOAT3 CamPos = { 0,5,-5 };
 	XMFLOAT3 CamTarget = { 0,0,0 };
 public:

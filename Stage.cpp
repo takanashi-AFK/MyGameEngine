@@ -9,19 +9,17 @@ Stage::Stage(GameObject* parent)
 {
 	for (int i = 0; i < BLOCK_KINDS; i++)
 	{
-		hModel_[i] = 0;
+		hModel_[i] = -1;
 	}
 
-	for (int x = 0; x < XSIZE;  x++)
+	for (int z = 0; z < ZSIZE; z++)
 	{
-		for (int z = 0; z < ZSIZE; z++)
+		for (int x = 0; x < XSIZE; x++)
 		{
-			table_[x][z] = 0;
+			SetBlockType(x,z, BLOCK_WATER);
+			SetBlockHeight(x, z, x % 4+z%4);
 		}
 	}
-	
-
-	
 }
 
 void Stage::Initialize()
@@ -40,19 +38,15 @@ void Stage::Initialize()
 	hModel_[i] = Model::Load(fNameBase+modelName[i]);
 	assert(hModel_[i] >= 0);
 	}
-
-	for (int z = 0; z < ZSIZE; z++)
-	{
-		for (int x = 0; x < XSIZE; x++)
-		{
-			table_[x][z] = (x+z)%5;
-		}
-	}
 }
 
 void Stage::Update()
 {
 	
+	if (Input::IsKeyDown(DIK_P))
+	{
+		SetBlockHeight(7, 7, ++a);
+	}
 	
 }
 
@@ -65,17 +59,30 @@ void Stage::Draw()
 	{
 		for (int z = 0; z < ZSIZE; z++)
 		{
-			
-			BlockTrans.position_.x = x;
-			BlockTrans.position_.z = z;
-
-			Model::SetTransform(table_[x][z], BlockTrans);
-			Model::Draw(table_[x][z]);
+			for (int y = 0; y < table_[x][z].height+1; y++)
+			{
+			BlockTrans.position_ = { (float)x,(float)y,(float)z};
+			Model::SetTransform(hModel_[table_[x][z].block], BlockTrans);
+			Model::Draw(hModel_[table_[x][z].block]);
+			}
 
 		}
 	}
+
 }
 
 void Stage::Release()
 {
+}
+
+
+void Stage::SetBlockType(int _x, int _z, BLOCKTYPE _type)
+{
+	if (_type <= 5);
+	table_[_x][_z].block = _type;
+}
+
+void Stage::SetBlockHeight(int _x, int _z, int _height)
+{
+	table_[_x][_z].height = _height;
 }

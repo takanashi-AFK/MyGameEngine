@@ -9,7 +9,7 @@ class Stage : public GameObject
 {
 private:
 	int hModel_[BLOCK_KINDS];
-	int table_[XSIZE][ZSIZE];
+	int a = 1;
 	enum BLOCKTYPE
 	{
 		BLOCK_DEFAULT=0,
@@ -18,6 +18,12 @@ private:
 		BLOCK_SAND,
 		BLOCK_WATER
 	};
+
+	struct {
+		BLOCKTYPE block;
+		int height = 1;
+	}table_[XSIZE][ZSIZE];
+
 public:
 	//コンストラクタ
 	//引数：parent 
@@ -34,4 +40,8 @@ public:
 
 	//開放
 	void Release() override;
+
+	void SetBlockType(int _x,int _z ,BLOCKTYPE _type);
+
+	void SetBlockHeight(int _x, int _z, int _height);
 };
