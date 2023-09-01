@@ -7,7 +7,6 @@
 #include"Direct3D.h"
 #include"Camera.h"
 #include<vector>
-
 class Texture;
 
 #pragma comment(lib, "LibFbxSDK-Md.lib")
@@ -15,6 +14,13 @@ class Texture;
 #pragma comment(lib, "zlib-Md.lib")
 
 
+	struct RayCastData
+	{
+		XMVECTOR start;
+		XMVECTOR dir;
+		bool hit;
+		double dist;
+	};
 
 class Fbx
 {
@@ -39,6 +45,11 @@ class Fbx
 		XMVECTOR uv;
 		XMVECTOR normal;
 	};
+
+
+	VERTEX* pVertices_;//Rayのための頂点配列
+	int** ppIndex_;
+
 	int vertexCount_;	//頂点数
 	int polygonCount_;	//ポリゴン数 だいたいvertex*3になるでしょう
 	int materialCount_;	//マテリアルの個数
@@ -48,9 +59,6 @@ class Fbx
 	ID3D11Buffer** pIndexBuffer_;
 	ID3D11Buffer* pConstantBuffer_;
 	MATERIAL* pMaterialList_;
-
-
-
 
 public:
 
@@ -65,6 +73,7 @@ public:
 
 	void	SetBufferToPipeline(Transform transform);
 
+	void	RayCast(RayCastData& _rayData);
 
 
 };
