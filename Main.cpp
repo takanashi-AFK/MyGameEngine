@@ -22,18 +22,6 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 //エントリーポイント
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, int nCmdShow)
 {
-	XMVECTOR BeginP = XMVectorSet(1,5,1,0);
-	XMVECTOR dirVec = XMVectorSet(0, -1, 0, 0);
-	XMVECTOR p1 = XMVectorSet(0, 0, 0, 0);
-	XMVECTOR p2 = XMVectorSet(0, 0, 3, 0);
-	XMVECTOR p3 = XMVectorSet(3, 0, 0, 0);
-
-	float dist;
-
-
-	bool result = TriangleTests::Intersects(BeginP, dirVec, p1, p2, p3, dist);
-
-	int aaa;
 	//ウィンドウクラス（設計図）を作成
 	WNDCLASSEX wc;
 	wc.cbSize = sizeof(WNDCLASSEX);             //この構造体のサイズ
@@ -82,9 +70,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 	Fbx* pFbx = new Fbx;
 	pFbx->Load("Assets/BoxBrick.fbx");
-	RayCastData data;
-	data.start = XMVectorSet(0,5,0,0);
-	data.dir = XMVectorSet(0, -1, 0, 0);
+	RayCastData data{};
+	data.start = XMFLOAT4(0,5,0,0);
+	data.dir = XMFLOAT4(0, -1, 0, 0);
 	pFbx->RayCast(data);
 
 	if (data.hit)

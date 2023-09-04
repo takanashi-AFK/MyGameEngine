@@ -1,6 +1,7 @@
 #include "Fbx.h"
 #include"Texture.h"
 #include"DirectXCollision.h"
+#include<vector>
 
 using namespace std;
 Fbx::Fbx():pVertexBuffer_(nullptr),pIndexBuffer_(nullptr), pConstantBuffer_(nullptr),vertexCount_(0),polygonCount_(0)
@@ -122,12 +123,12 @@ void Fbx::InitVertex(fbxsdk::FbxMesh* mesh)
 void Fbx::InitIndex(fbxsdk::FbxMesh* mesh)
 {
 	pIndexBuffer_ = new ID3D11Buffer * [materialCount_];
-
+	indexCount_ = std::vector<int>(materialCount_);
+	//vector<int> index(polygonCount_ * 3);
 	//indexCount_ = new int [materialCount_];
 
 	ppIndex_ = new int* [materialCount_];
 
-	vector<int> index(polygonCount_ * 3);
 	for (int i = 0; i < materialCount_; i++)
 	{
 		ppIndex_[i] = new int[polygonCount_ * 3];
@@ -152,7 +153,7 @@ void Fbx::InitIndex(fbxsdk::FbxMesh* mesh)
 		indexCount_[i] = count;
 		D3D11_BUFFER_DESC   bd;
 		bd.Usage = D3D11_USAGE_DEFAULT;
-		bd.ByteWidth = sizeof(int) * count;//countであってる？？？？？？？？？？？？？？？？？？？？
+		bd.ByteWidth = sizeof(int) * polygonCount_ * 3;
 		bd.BindFlags = D3D11_BIND_INDEX_BUFFER;
 		bd.CPUAccessFlags = 0;
 		bd.MiscFlags = 0;
@@ -188,7 +189,7 @@ void Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 		int fileTextureCount = lProperty.GetSrcObjectCount<FbxFileTexture>();
 
 		//テクスチャあり
-		if (fileTextureCount != 0)
+		if (fileTextureCount)
 		{
 			FbxFileTexture* textureInfo = lProperty.GetSrcObject<FbxFileTexture>(0);
 			const char* textureFilePath = textureInfo->GetRelativeFileName();
@@ -200,7 +201,9 @@ void Fbx::InitMaterial(fbxsdk::FbxNode* pNode)
 
 			//ファイルからテクスチャ作成
 			pMaterialList_[i].pTexture = new Texture;
-			pMaterialList_[i].pTexture->Load(name);
+			HRESULT hr = pMaterialList_[i].pTexture->Load(name);
+			assert(hr == S_OK);
+
 		}
 
 		//テクスチャ無し
@@ -243,12 +246,14 @@ void Fbx::SetBufferToPipeline(Transform transform)
 
 	for (int i = 0; i < materialCount_; i++) {
 
-		cb.diffuseColor = pMaterialList_[i].diffuse;
-		cb.isTexture = pMaterialList_[i].pTexture != nullptr;
-
-		cb.diffuseColor = XMFLOAT4{ 1,0,0,1 };
-		cb.isTexture = pMaterialList_[i].pTexture != nullptr;
-
+		if (i == 1) {
+			cb.diffuseColor = XMFLOAT4(1, 1, 1, 1);
+			cb.isTexture = pMaterialList_[i].pTexture != nullptr;
+		}
+		else {
+			cb.diffuseColor = pMaterialList_[i].diffuse;
+			cb.isTexture = pMaterialList_[i].pTexture != nullptr;
+		}
 		D3D11_MAPPED_SUBRESOURCE pdata;
 		Direct3D::pContext_->Map(pConstantBuffer_, 0, D3D11_MAP_WRITE_DISCARD, 0, &pdata);	// GPUからのデータアクセスを止める
 		memcpy_s(pdata.pData, pdata.RowPitch, (void*)(&cb), sizeof(cb));	// データを値を送る
@@ -285,12 +290,19 @@ void Fbx::RayCast(RayCastData& _rayData)
 	{
 		for (int poly = 0; poly < indexCount_[material]/3; poly++)
 		{
-			XMVECTOR v0 = pVertices_[ppIndex_[material][poly * 3 + 0]].position;
-			XMVECTOR v1 = pVertices_[ppIndex_[material][poly * 3 + 1]].position;
-			XMVECTOR v2 = pVertices_[ppIndex_[material][poly * 3 + 2]].position;
+			int i0 = ppIndex_[material][poly * 3 + 0];
+			int i1 = ppIndex_[material][poly * 3 + 1];
+			int i2 = ppIndex_[material][poly * 3 + 2];
+
+			XMVECTOR v0 = pVertices_[i0].position;
+			XMVECTOR v1 = pVertices_[i1].position;
+			XMVECTOR v2 = pVertices_[i2].position;
+
+			XMVECTOR start = XMLoadFloat4(&_rayData.start);
+			XMVECTOR dir = XMLoadFloat4(&_rayData.dir);
 			float dist;
 
-			_rayData.hit =  TriangleTests::Intersects(_rayData.start, _rayData.dir, v0, v1, v2,dist);
+			_rayData.hit =  TriangleTests::Intersects(start, dir, v0, v1, v2,dist);
 
 			if (_rayData.hit)
 			{

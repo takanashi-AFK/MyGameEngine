@@ -6,7 +6,7 @@
 #include "Transform.h"
 #include"Direct3D.h"
 #include"Camera.h"
-#include<vector>
+#include <vector>
 class Texture;
 
 #pragma comment(lib, "LibFbxSDK-Md.lib")
@@ -16,10 +16,9 @@ class Texture;
 
 	struct RayCastData
 	{
-		XMVECTOR start;
-		XMVECTOR dir;
+		XMFLOAT4 start;
+		XMFLOAT4 dir;
 		bool hit;
-		double dist;
 	};
 
 class Fbx
@@ -53,7 +52,7 @@ class Fbx
 	int vertexCount_;	//頂点数
 	int polygonCount_;	//ポリゴン数 だいたいvertex*3になるでしょう
 	int materialCount_;	//マテリアルの個数
-	int *indexCount_;
+	std::vector<int>indexCount_;
 
 	ID3D11Buffer* pVertexBuffer_;
 	ID3D11Buffer** pIndexBuffer_;
