@@ -17,12 +17,9 @@ BOOL Stage::DialogProc2(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp)
 		SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_ADDSTRING,0,(LPARAM)"Box_GRASS");
 		SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_ADDSTRING,0,(LPARAM)"Box_SAND");
 		SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_ADDSTRING,0,(LPARAM)"Box_WATER");
-		select_ = SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_SETCURSEL, 0, 0);
-
+		SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_SETCURSEL, 0, 0);
 
 		return TRUE;
-
-
 	}
 	return FALSE;
 }
@@ -39,8 +36,7 @@ Stage::Stage(GameObject* parent)
 	{
 		for (int x = 0; x < XSIZE; x++)
 		{
-			SetBlockType(x,z, BLOCK_WATER);
-			
+			SetBlockType(x,z, BLOCK_WATER);	
 		}
 	}
 }

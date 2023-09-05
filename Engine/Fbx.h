@@ -19,6 +19,7 @@ class Texture;
 		XMFLOAT4 start;
 		XMFLOAT4 dir;
 		bool hit;
+		float dist;
 	};
 
 class Fbx
