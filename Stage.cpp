@@ -17,7 +17,7 @@ BOOL Stage::DialogProc2(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp)
 		SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_ADDSTRING,0,(LPARAM)"Box_GRASS");
 		SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_ADDSTRING,0,(LPARAM)"Box_SAND");
 		SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_ADDSTRING,0,(LPARAM)"Box_WATER");
-		SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_SETCURSEL, 1, 0);
+		select_ = SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_SETCURSEL, 0, 0);
 
 
 		return TRUE;
@@ -69,6 +69,25 @@ void Stage::Update()
 	if (Input::IsKeyDown(DIK_P))
 	{
 		SetBlockHeight(7, 7, ++a);
+	}
+
+	switch (select_)
+	{
+	case 0:
+		//デフォルト
+			break;
+	case 1:
+		//石
+			break;
+	case 2:
+		//草
+			break;
+	case 3:
+		//砂
+			break;
+	case 4:
+		//水
+			break;
 	}
 	
 }
