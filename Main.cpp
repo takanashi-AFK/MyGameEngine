@@ -9,6 +9,8 @@
 #include"DirectXCollision.h"
 #include "resource.h"
 
+#include"Stage.h"
+
 #pragma comment(lib, "winmm.lib")
 
 //定数宣言
@@ -174,9 +176,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 BOOL CALLBACK DialogProc(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp)
 {
-	switch (msg)
-	{
+	Stage* pStage = (Stage*)pRootJob->FindObject("Stage");
+	return pStage->DialogProc2(hDlg, msg, wp, lp);
 
-	}
-	return FALSE;
+
 }

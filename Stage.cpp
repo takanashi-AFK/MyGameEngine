@@ -3,6 +3,29 @@
 #include"Engine/Input.h"
 #include"Engine/Model.h"
 #include"Engine/Camera.h"
+#include"resource.h"
+
+BOOL Stage::DialogProc2(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp)
+{
+	switch (msg)
+	{
+	case WM_INITDIALOG:
+		
+		SendMessage(GetDlgItem(hDlg, IDC_RADIO_UP), BM_SETCHECK, BST_CHECKED, 0);
+		SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_ADDSTRING,0,(LPARAM)"Box_Default");
+		SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_ADDSTRING,0,(LPARAM)"Box_BRICK");
+		SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_ADDSTRING,0,(LPARAM)"Box_GRASS");
+		SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_ADDSTRING,0,(LPARAM)"Box_SAND");
+		SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_ADDSTRING,0,(LPARAM)"Box_WATER");
+		SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_SETCURSEL, 1, 0);
+
+
+		return TRUE;
+
+
+	}
+	return FALSE;
+}
 
 Stage::Stage(GameObject* parent)
 	:GameObject(parent, "Stage")
@@ -17,7 +40,7 @@ Stage::Stage(GameObject* parent)
 		for (int x = 0; x < XSIZE; x++)
 		{
 			SetBlockType(x,z, BLOCK_WATER);
-			SetBlockHeight(x, z, x % 4+z%4);
+			
 		}
 	}
 }
@@ -86,3 +109,4 @@ void Stage::SetBlockHeight(int _x, int _z, int _height)
 {
 	table_[_x][_z].height = _height;
 }
+
