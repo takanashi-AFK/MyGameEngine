@@ -34,6 +34,11 @@ void Model::Draw(int _hModel)
 	modelList[_hModel]->fbx_->Draw(modelList[_hModel]->transform_);
 }
 
+void Model::RayCast(int _hModel, RayCastData& rayData)
+{
+	modelList[_hModel]->fbx_->RayCast(rayData);
+}
+
 void Model::Release()
 {
 	bool isReferrd=false;//QÆ‚³‚ê‚Ä‚éH

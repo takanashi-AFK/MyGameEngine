@@ -22,7 +22,7 @@ namespace Direct3D
 	ID3D11InputLayout* pVertexLayout_ = nullptr;	//頂点インプットレイアウト
 	ID3D11RasterizerState* pRasterizerState_ = nullptr;	//ラスタライザー
 	};
-
+	int scrWidth, scrHeight;
 	SHADER_BUNDLE shaderBundle[SHADER_MAX];
 }
 
@@ -30,6 +30,9 @@ namespace Direct3D
 HRESULT Direct3D::Initialize(int winW, int winH, HWND hWnd)
 {
 	HRESULT hr;
+
+	scrWidth = winW;
+	scrHeight = winH;
 	///////////////////////////いろいろ準備するための設定///////////////////////////////
 //いろいろな設定項目をまとめた構造体
 	DXGI_SWAP_CHAIN_DESC scDesc;

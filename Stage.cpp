@@ -3,7 +3,13 @@
 #include"Engine/Input.h"
 #include"Engine/Model.h"
 #include"Engine/Camera.h"
+#include "Engine/Direct3D.h"
 #include"resource.h"
+#include"Engine/Input.h"
+
+const int MaxZ = 1;
+const int MinZ = 0;
+const XMFLOAT2 Offset = { 0,0 };
 
 BOOL Stage::DialogProc2(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp)
 {
@@ -67,25 +73,22 @@ void Stage::Update()
 		SetBlockHeight(7, 7, ++a);
 	}
 
-	switch (select_)
+	float w = (float)(Direct3D::scrWidth / 2);
+	float h = (float)(Direct3D::scrHeight / 2);
+	XMMATRIX vp =
 	{
-	case 0:
-		//デフォルト
-			break;
-	case 1:
-		//石
-			break;
-	case 2:
-		//草
-			break;
-	case 3:
-		//砂
-			break;
-	case 4:
-		//水
-			break;
-	}
-	
+		w,0,0,0,
+		0,-h,0,0,
+		0,0,MaxZ-MinZ,0,
+		Offset.x+w,Offset.y + h,MinZ,1
+	};
+
+	XMMATRIX invVP = XMMatrixInverse(nullptr,vp)
+	XMMATRIX invProj = 
+
+	XMMATRIX invView=
+	XMFLOAT3 mousePosFront= 
+
 }
 
 void Stage::Draw()
