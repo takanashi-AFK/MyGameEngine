@@ -42,7 +42,7 @@ Stage::Stage(GameObject* parent)
 	{
 		for (int x = 0; x < XSIZE; x++)
 		{
-			SetBlockType(x,z, BLOCK_WATER);	
+			SetBlockType(x,z, BLOCK_DEFAULT);	
 		}
 	}
 }
@@ -72,7 +72,7 @@ void Stage::Update()
 	{
 		SetBlockHeight(7, 7, ++a);
 	}
-
+	
 	float w = (float)(Direct3D::scrWidth / 2);
 	float h = (float)(Direct3D::scrHeight / 2);
 	XMMATRIX vp =
@@ -83,13 +83,51 @@ void Stage::Update()
 		Offset.x+w,Offset.y + h,MinZ,1
 	};
 
-	XMMATRIX invVP = XMMatrixInverse(nullptr,vp)
-	XMMATRIX invProj = 
+	XMMATRIX invVP = XMMatrixInverse(nullptr, vp);
+	XMMATRIX invProj = XMMatrixInverse(nullptr, Camera::GetViewMatrix());
+	XMMATRIX invView = XMMatrixInverse(nullptr, Camera::GetViewMatrix());
 
-	XMMATRIX invView=
-	XMFLOAT3 mousePosFront= 
+	XMFLOAT3 mousePosFront = Input::GetMousePosition();
+	mousePosFront.z = 0.0f;
 
+	XMVECTOR vMousePosFront = XMLoadFloat3(&mousePosFront);
+	vMousePosFront = XMVector3TransformCoord(vMousePosFront, invVP * invProj * invView);
+
+	XMFLOAT3 mousePosBack = Input::GetMousePosition();
+	mousePosBack.z = 1.0;
+
+	XMVECTOR vMousePosBack = XMLoadFloat3(&mousePosBack);
+	vMousePosBack = XMVector3TransformCoord(vMousePosBack, invVP * invProj * invView);
+
+	
+			for (int x = 0; x < 15; x++)
+			{
+				for (int z = 0; z < 15; z++)
+				{
+					for (int y = 0; y < table_[x][z].height; y++)
+					{
+						RayCastData frontToback;
+						XMStoreFloat4(&frontToback.start, vMousePosFront);
+						XMStoreFloat4(&frontToback.dir,vMousePosBack-vMousePosFront);
+						Transform trans;
+						trans.position_.x=x;
+						trans.position_.y=y;
+						trans.position_.z=z;
+						Model::SetTransform(hModel_[0], trans);
+						Model::RayCast(hModel_[0], frontToback);
+
+						if (frontToback.hit)
+						{
+							break;
+						}
+					}
+				}
+			}
+		
 }
+
+
+
 
 void Stage::Draw()
 {
@@ -100,7 +138,7 @@ void Stage::Draw()
 	{
 		for (int z = 0; z < ZSIZE; z++)
 		{
-			for (int y = 0; y < table_[x][z].height+1; y++)
+			for (int y = 0; y < table_[x][z].height; y++)
 			{
 			BlockTrans.position_ = { (float)x,(float)y,(float)z};
 			Model::SetTransform(hModel_[table_[x][z].block], BlockTrans);
