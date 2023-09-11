@@ -72,16 +72,6 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	hr = Direct3D::Initialize(winW, winH, hWnd);	
 	if (FAILED(hr))return hr;
 
-	//Fbx* pFbx = new Fbx;
-	//pFbx->Load("Assets/BoxBrick.fbx");
-	//RayCastData data{};
-	//data.start = XMFLOAT4(0,5,0,0);
-	//data.dir = XMFLOAT4(0, -1, 0, 0);
-	//pFbx->RayCast(data);
-
-	//if (data.hit)
-	//	int a;
-
 	Camera::Initialize();
 	Camera::SetTarget(XMFLOAT3{ 0,2,-5});
 	pRootJob = new RootJob(nullptr);//木構造の一番上を表すため、nullptr

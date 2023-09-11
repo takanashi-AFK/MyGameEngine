@@ -48,11 +48,14 @@ void Model::RayCast(int _hModel, RayCastData& rayData)
 					rayData.start.w + rayData.dir.w };
 	//3raydata.startをモデル空間に変換(1をかける)
 	XMVECTOR vstart = XMLoadFloat4(&rayData.start);
-	XMVector3TransformCoord(vstart, wInv);
+	vstart = XMVector3TransformCoord(vstart, wInv); //tarnsformcoordはw要素を無視してくれるらしい
+	XMStoreFloat4(&rayData.start, vstart);
 	//4視点から方向ベクトルをちょい伸ばした先 通過点に１をかける
-	vpass = XMVector2TransformCoord(vstart, wInv);
+	vpass = XMVector3TransformCoord(vstart, wInv);
 	//5raydataを3から4に向かうベクトルにする(引き算)
 	vpass = vpass - vstart;
+
+	XMStoreFloat4(&rayData.dir, vpass);
 	//指定したモデル番号のFBXにレイ
 	modelList[_hModel]->fbx_->RayCast(rayData);
 }

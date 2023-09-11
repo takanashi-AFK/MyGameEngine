@@ -4,7 +4,9 @@
 #include<vector>
 
 using namespace std;
-Fbx::Fbx():pVertexBuffer_(nullptr),pIndexBuffer_(nullptr), pConstantBuffer_(nullptr),vertexCount_(0),polygonCount_(0)
+Fbx::Fbx()
+	:pVertexBuffer_(nullptr),pIndexBuffer_(nullptr),
+	pConstantBuffer_(nullptr),vertexCount_(0),polygonCount_(0)
 {
 }
 
@@ -290,13 +292,9 @@ void Fbx::RayCast(RayCastData& _rayData)
 	{
 		for (int poly = 0; poly < indexCount_[material]/3; poly++)
 		{
-			int i0 = ppIndex_[material][poly * 3 + 0];
-			int i1 = ppIndex_[material][poly * 3 + 1];
-			int i2 = ppIndex_[material][poly * 3 + 2];
-
-			XMVECTOR v0 = pVertices_[i0].position;
-			XMVECTOR v1 = pVertices_[i1].position;
-			XMVECTOR v2 = pVertices_[i2].position;
+			XMVECTOR v0 = pVertices_[ppIndex_[material][poly * 3 + 0]].position;
+			XMVECTOR v1 = pVertices_[ppIndex_[material][poly * 3 + 1]].position;
+			XMVECTOR v2 = pVertices_[ppIndex_[material][poly * 3 + 2]].position;
 
 			XMVECTOR start = XMLoadFloat4(&_rayData.start);
 			XMVECTOR dir = XMLoadFloat4(&_rayData.dir);

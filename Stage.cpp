@@ -67,6 +67,7 @@ void Stage::Initialize()
 
 void Stage::Update()
 {
+	if (!Input::IsMouseButtonDown(0))return;
 	
 	if (Input::IsKeyDown(DIK_P))
 	{
@@ -77,36 +78,38 @@ void Stage::Update()
 	float h = (float)(Direct3D::scrHeight / 2);
 	XMMATRIX vp =
 	{
-		w,0,0,0,
-		0,-h,0,0,
-		0,0,MaxZ-MinZ,0,
-		Offset.x+w,Offset.y + h,MinZ,1
+	w, 0, 0, 0,
+	0,-h, 0, 0,
+	0, 0, 1, 0,
+	w, h, 0, 1
 	};
 
 	XMMATRIX invVP = XMMatrixInverse(nullptr, vp);
-	XMMATRIX invProj = XMMatrixInverse(nullptr, Camera::GetViewMatrix());
+	XMMATRIX invProj = XMMatrixInverse(nullptr, Camera::GetProjectionMatrix());
 	XMMATRIX invView = XMMatrixInverse(nullptr, Camera::GetViewMatrix());
 
 	XMFLOAT3 mousePosFront = Input::GetMousePosition();
 	mousePosFront.z = 0.0f;
+	XMFLOAT3 mousePosBack = Input::GetMousePosition();
+	mousePosBack.z = 1.0;
 
 	XMVECTOR vMousePosFront = XMLoadFloat3(&mousePosFront);
 	vMousePosFront = XMVector3TransformCoord(vMousePosFront, invVP * invProj * invView);
 
-	XMFLOAT3 mousePosBack = Input::GetMousePosition();
-	mousePosBack.z = 1.0;
 
 	XMVECTOR vMousePosBack = XMLoadFloat3(&mousePosBack);
 	vMousePosBack = XMVector3TransformCoord(vMousePosBack, invVP * invProj * invView);
 
 	
+
 			for (int x = 0; x < 15; x++)
 			{
 				for (int z = 0; z < 15; z++)
 				{
-					for (int y = 0; y < table_[x][z].height; y++)
+					for (int y = 0; y < table_[x][z].height+1; y++)
 					{
 						RayCastData frontToback;
+						frontToback.hit = false;
 						XMStoreFloat4(&frontToback.start, vMousePosFront);
 						XMStoreFloat4(&frontToback.dir,vMousePosBack-vMousePosFront);
 						Transform trans;
@@ -118,7 +121,7 @@ void Stage::Update()
 
 						if (frontToback.hit)
 						{
-							break;
+  						break;
 						}
 					}
 				}
