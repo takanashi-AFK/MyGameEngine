@@ -121,7 +121,8 @@ void Stage::Update()
 
 						if (frontToback.hit)
 						{
-  						break;
+							table_[x][z].height++;
+							break;
 						}
 					}
 				}

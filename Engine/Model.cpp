@@ -51,7 +51,7 @@ void Model::RayCast(int _hModel, RayCastData& rayData)
 	vstart = XMVector3TransformCoord(vstart, wInv); //tarnsformcoordはw要素を無視してくれるらしい
 	XMStoreFloat4(&rayData.start, vstart);
 	//4視点から方向ベクトルをちょい伸ばした先 通過点に１をかける
-	vpass = XMVector3TransformCoord(vstart, wInv);
+	vpass = XMVector3TransformCoord(vpass, wInv);
 	//5raydataを3から4に向かうベクトルにする(引き算)
 	vpass = vpass - vstart;
 
