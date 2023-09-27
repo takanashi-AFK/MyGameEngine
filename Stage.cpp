@@ -10,6 +10,7 @@
 const int MaxZ = 1;
 const int MinZ = 0;
 const XMFLOAT2 Offset = { 0,0 };
+int ValueOfChange = 1;
 
 BOOL Stage::DialogProc2(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp)
 {
@@ -26,6 +27,23 @@ BOOL Stage::DialogProc2(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp)
 		SendMessage(GetDlgItem(hDlg, IDC_COMBO1), CB_SETCURSEL, 0, 0);
 
 		return TRUE;
+
+	case WM_COMMAND:
+		switch (LOWORD(wp)) {
+		case IDC_RADIO_UP:
+			if (HIWORD(wp) == BN_CLICKED) {
+				// ラジオボタン "上げる" がクリックされたときの処理
+				ValueOfChange = 1;
+			}
+			break;
+		case IDC_RADIO_DOWN:
+			if (HIWORD(wp) == BN_CLICKED) {
+				// ラジオボタン "下げる" がクリックされたときの処理
+				ValueOfChange = -1;
+			}
+			break;
+		}
+		break;
 	}
 	return FALSE;
 }
@@ -101,32 +119,26 @@ void Stage::Update()
 	vMousePosBack = XMVector3TransformCoord(vMousePosBack, invVP * invProj * invView);
 
 	
+	for (int x = 0; x < 15; x++) {
+		for (int z = 0; z < 15; z++) {
+			for (int y = 0; y < table_[x][z].height + 1; y++) {
+				RayCastData frontToback;
+				frontToback.hit = false;
+				XMStoreFloat4(&frontToback.start, vMousePosFront);
+				XMStoreFloat4(&frontToback.dir, vMousePosBack - vMousePosFront);
+				Transform trans;
+				trans.position_.x = x;
+				trans.position_.y = y;
+				trans.position_.z = z;
+				Model::SetTransform(hModel_[0], trans);
+				Model::RayCast(hModel_[0], frontToback);
 
-			for (int x = 0; x < 15; x++)
-			{
-				for (int z = 0; z < 15; z++)
-				{
-					for (int y = 0; y < table_[x][z].height+1; y++)
-					{
-						RayCastData frontToback;
-						frontToback.hit = false;
-						XMStoreFloat4(&frontToback.start, vMousePosFront);
-						XMStoreFloat4(&frontToback.dir,vMousePosBack-vMousePosFront);
-						Transform trans;
-						trans.position_.x=x;
-						trans.position_.y=y;
-						trans.position_.z=z;
-						Model::SetTransform(hModel_[0], trans);
-						Model::RayCast(hModel_[0], frontToback);
-
-						if (frontToback.hit)
-						{
-							table_[x][z].height++;
-							break;
-						}
-					}
+				if (frontToback.hit) {
+					table_[x][z].height += ValueOfChange;
 				}
 			}
+		}
+	}
 		
 }
 
