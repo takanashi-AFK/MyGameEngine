@@ -36,7 +36,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	wc.hIcon = LoadIcon(NULL, IDI_APPLICATION); //アイコン
 	wc.hIconSm = LoadIcon(NULL, IDI_WINLOGO);   //小さいアイコン
 	wc.hCursor = LoadCursor(NULL, IDC_ARROW);   //マウスカーソル
-	wc.lpszMenuName = NULL;                     //メニュー（なし）
+	wc.lpszMenuName = MAKEINTRESOURCE(IDR_MENU1)	;                     //メニュー（なし）
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
 	wc.hbrBackground = (HBRUSH)GetStockObject(WHITE_BRUSH); //背景（白）
@@ -44,19 +44,19 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 	//ウィンドウサイズの計算
 	RECT winRect = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
-	AdjustWindowRect(&winRect, WS_OVERLAPPEDWINDOW, FALSE);
+	AdjustWindowRect(&winRect, WS_OVERLAPPEDWINDOW, TRUE);
 	int winW = winRect.right - winRect.left;     //ウィンドウ幅
 	int winH = winRect.bottom - winRect.top;     //ウィンドウ高さ
 
 	//ウィンドウを作成
 	HWND hWnd = CreateWindow(
-		"SampleGame",         //ウィンドウクラス名
-		"サンプルゲーム",     //タイトルバーに表示する内容
+		"SampleGame",        //ウィンドウクラス名
+		"サンプルゲーム",    //タイトルバーに表示する内容
 		WS_OVERLAPPEDWINDOW, //スタイル（普通のウィンドウ）
 		CW_USEDEFAULT,       //表示位置左（おまかせ）
 		CW_USEDEFAULT,       //表示位置上（おまかせ）
-		winW,                 //ウィンドウ幅
-		winH,                 //ウィンドウ高さ
+		winW,                //ウィンドウ幅
+		winH,                //ウィンドウ高さ
 		NULL,                //親ウインドウ（なし）
 		NULL,                //メニュー（なし）
 		hInstance,           //インスタンス
@@ -162,6 +162,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_DESTROY:
 		PostQuitMessage(0);  //プログラム終了
 		return 0;
+	case WM_COMMAND:
+		Stage* pStage = (Stage*)pRootJob->FindObject("Stage");
+		return pStage->MenuProc2(hWnd, msg, wParam, lParam);
 	}
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
@@ -170,6 +173,5 @@ BOOL CALLBACK DialogProc(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp)
 {
 	Stage* pStage = (Stage*)pRootJob->FindObject("Stage");
 	return pStage->DialogProc2(hDlg, msg, wp, lp);
-
-
 }
+

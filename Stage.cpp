@@ -6,6 +6,9 @@
 #include "Engine/Direct3D.h"
 #include"resource.h"
 #include"Engine/Input.h"
+#include<fstream>
+#include<iostream>
+
 
 const int MaxZ = 1;
 const int MinZ = 0;
@@ -48,6 +51,19 @@ BOOL Stage::DialogProc2(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp)
 	return FALSE;
 }
 
+BOOL Stage::MenuProc2(HWND hMenu, UINT msg, WPARAM wp, LPARAM lp)
+{
+	switch (LOWORD(wp))
+	{
+		case ID_FILE_SAVE:
+			fileName1 = "fileName.txt";
+			int a = 0;
+			SaveBlockData(fileName1);
+			break;
+	}
+			
+	return FALSE;
+}
 Stage::Stage(GameObject* parent)
 	:GameObject(parent, "Stage")
 {
@@ -147,7 +163,6 @@ void Stage::Update()
 
 void Stage::Draw()
 {
-
 	Transform BlockTrans;//TransformŒ^‚Ì•Ï”‚ğì‚é
 	//TransformŒ^‚ÍAˆÊ’uŒü‚«‘å‚«‚³‚È‚Ç‚ğˆµ‚¤Œ^
 	for (int x = 0; x < XSIZE; x++)
@@ -160,10 +175,8 @@ void Stage::Draw()
 			Model::SetTransform(hModel_[table_[x][z].block], BlockTrans);
 			Model::Draw(hModel_[table_[x][z].block]);
 			}
-
 		}
 	}
-
 }
 
 void Stage::Release()
@@ -180,5 +193,20 @@ void Stage::SetBlockType(int _x, int _z, BLOCKTYPE _type)
 void Stage::SetBlockHeight(int _x, int _z, int _height)
 {
 	table_[_x][_z].height = _height;
+}
+
+void Stage::SaveBlockData(std::string _fileName)
+{
+
+	std::fstream fst(_fileName);
+	std::string buffer;
+	for (int x = 0; x < XSIZE; x++)
+	{
+		for (int z = 0; z < ZSIZE; z++)
+		{
+			buffer += std::to_string(table_[z][x].height);
+		}
+	}
+	fst << buffer;
 }
 

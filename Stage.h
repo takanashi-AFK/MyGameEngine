@@ -20,15 +20,18 @@ private:
 	};
 
 	struct {
-		BLOCKTYPE block;
+		BLOCKTYPE block = BLOCK_DEFAULT;
 		int height = 1;
 	}table_[XSIZE][ZSIZE];
 
+	std::string	fileName1;
+	std::string buffer;
 	int mode_;//0:上げる :1下げる 2:種類変える
 	int select_;//種類
 
 public:
 	BOOL DialogProc2(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp);
+	BOOL MenuProc2(HWND hMenu, UINT msg, WPARAM wp, LPARAM lp);
 	//コンストラクタ
 	//引数：parent 
 	Stage(GameObject* parent);
@@ -48,6 +51,8 @@ public:
 	void SetBlockType(int _x,int _z ,BLOCKTYPE _type);
 
 	void SetBlockHeight(int _x, int _z, int _height);
+
+	void SaveBlockData(std::string _fileName);
 
 	
 };
