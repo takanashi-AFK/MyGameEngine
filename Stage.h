@@ -12,7 +12,7 @@ private:
 	int a = 1;
 	enum BLOCKTYPE
 	{
-		BLOCK_DEFAULT=0,
+		BLOCK_DEFAULT = 0, 
 		BLOCK_BRICK, 
 		BLOCK_GRASS,
 		BLOCK_SAND,
@@ -24,8 +24,7 @@ private:
 		int height = 1;
 	}table_[XSIZE][ZSIZE];
 
-	std::string	fileName1;
-	std::string buffer;
+
 	int mode_;//0:è„Ç∞ÇÈ :1â∫Ç∞ÇÈ 2:éÌóﬁïœÇ¶ÇÈ
 	int select_;//éÌóﬁ
 
@@ -52,7 +51,7 @@ public:
 
 	void SetBlockHeight(int _x, int _z, int _height);
 
-	void SaveBlockData(std::string _fileName);
+	void SaveBlockData();
 
 	
 };

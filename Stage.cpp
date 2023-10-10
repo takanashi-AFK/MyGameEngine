@@ -8,6 +8,7 @@
 #include"Engine/Input.h"
 #include<fstream>
 #include<iostream>
+#include <sstream>
 
 
 const int MaxZ = 1;
@@ -56,14 +57,14 @@ BOOL Stage::MenuProc2(HWND hMenu, UINT msg, WPARAM wp, LPARAM lp)
 	switch (LOWORD(wp))
 	{
 		case ID_FILE_SAVE:
-			fileName1 = "fileName.txt";
-			int a = 0;
-			SaveBlockData(fileName1);
+			
+			SaveBlockData();
 			break;
 	}
 			
 	return FALSE;
 }
+
 Stage::Stage(GameObject* parent)
 	:GameObject(parent, "Stage")
 {
@@ -72,11 +73,12 @@ Stage::Stage(GameObject* parent)
 		hModel_[i] = -1;
 	}
 
-	for (int z = 0; z < ZSIZE; z++)
+	for (int x = 0; x < XSIZE; x++)
 	{
-		for (int x = 0; x < XSIZE; x++)
+		for (int z = 0; z < ZSIZE; z++)
 		{
-			SetBlockType(x,z, BLOCK_DEFAULT);	
+			table_[x][z].block = BLOCK_DEFAULT;
+			table_[x][z].height = 1;
 		}
 	}
 }
@@ -97,6 +99,8 @@ void Stage::Initialize()
 	hModel_[i] = Model::Load(fNameBase+modelName[i]);
 	assert(hModel_[i] >= 0);
 	}
+
+		
 }
 
 void Stage::Update()
@@ -154,12 +158,8 @@ void Stage::Update()
 				}
 			}
 		}
-	}
-		
+	}		
 }
-
-
-
 
 void Stage::Draw()
 {
@@ -195,18 +195,34 @@ void Stage::SetBlockHeight(int _x, int _z, int _height)
 	table_[_x][_z].height = _height;
 }
 
-void Stage::SaveBlockData(std::string _fileName)
+void Stage::SaveBlockData()
 {
-
-	std::fstream fst(_fileName);
+	char fileName1[MAX_PATH] = "無題.map";
 	std::string buffer;
+	OPENFILENAME ofn;
+	std::stringstream oss;
+
+	ZeroMemory(&ofn, sizeof(ofn));
+	ofn.lStructSize = sizeof(OPENFILENAME);
+	ofn.lpstrFilter = TEXT("マップデータ(*.map)\0*.map\0");
+	ofn.lpstrFile = fileName1;
+	ofn.nMaxFile = MAX_PATH;
+	ofn.Flags = OFN_OVERWRITEPROMPT;
+	ofn.lpstrDefExt = TEXT("map");
+	ofn.lpstrDefExt;
+	BOOL selFile = GetSaveFileName(&ofn);
+
+	if (selFile == FALSE)return;
+	std::ofstream outputFile(fileName1);
 	for (int x = 0; x < XSIZE; x++)
 	{
 		for (int z = 0; z < ZSIZE; z++)
 		{
-			buffer += std::to_string(table_[z][x].height);
+			oss << table_[z][x].height;
 		}
 	}
-	fst << buffer;
+	
+	outputFile << oss.str();
+	outputFile.close();
 }
 
