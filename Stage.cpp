@@ -56,10 +56,9 @@ BOOL Stage::MenuProc2(HWND hMenu, UINT msg, WPARAM wp, LPARAM lp)
 {
 	switch (LOWORD(wp))
 	{
-		case ID_FILE_SAVE:
-			
-			SaveBlockData();
-			break;
+	case ID_FILE_SAVE:
+ 		int i = true;
+		SaveBlockData();
 	}
 			
 	return FALSE;
@@ -158,7 +157,9 @@ void Stage::Update()
 				}
 			}
 		}
-	}		
+	}	
+	
+	SaveBlockData();
 }
 
 void Stage::Draw()
@@ -218,7 +219,11 @@ void Stage::SaveBlockData()
 	{
 		for (int z = 0; z < ZSIZE; z++)
 		{
-			oss << table_[z][x].height;
+
+			int i = x;
+
+			int j = z;//break point
+			this->table_[z][x].height;
 		}
 	}
 	

@@ -164,7 +164,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		return 0;
 	case WM_COMMAND:
 		Stage* pStage = (Stage*)pRootJob->FindObject("Stage");
-		return pStage->MenuProc2(hWnd, msg, wParam, lParam);
+		if(wParam == ID_FILE_SAVE)pStage->SaveBlockData();
+
+		return 0;
 	}
 	return DefWindowProc(hWnd, msg, wParam, lParam);
 }
