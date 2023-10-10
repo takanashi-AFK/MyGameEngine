@@ -163,8 +163,12 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		PostQuitMessage(0);  //プログラム終了
 		return 0;
 	case WM_COMMAND:
-		Stage* pStage = (Stage*)pRootJob->FindObject("Stage");
-		if(wParam == ID_FILE_SAVE)pStage->SaveBlockData();
+		switch (LOWORD(wParam))
+		{
+		case ID_FILE_SAVE:
+			((Stage*)pRootJob->FindObject("Stage"))->SaveBlockData();
+			return 0;
+		}
 
 		return 0;
 	}
@@ -173,7 +177,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 BOOL CALLBACK DialogProc(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp)
 {
-	Stage* pStage = (Stage*)pRootJob->FindObject("Stage");
-	return pStage->DialogProc2(hDlg, msg, wp, lp);
+	return	((Stage*)pRootJob->FindObject("Stage"))->DialogProc2(hDlg, msg,wp,lp);
 }
+
 

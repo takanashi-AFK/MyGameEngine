@@ -158,8 +158,6 @@ void Stage::Update()
 			}
 		}
 	}	
-	
-	SaveBlockData();
 }
 
 void Stage::Draw()
@@ -219,11 +217,10 @@ void Stage::SaveBlockData()
 	{
 		for (int z = 0; z < ZSIZE; z++)
 		{
-
 			int i = x;
 
 			int j = z;//break point
-			this->table_[z][x].height;
+			oss<<this->table_[z][x].height;
 		}
 	}
 	
