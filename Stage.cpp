@@ -54,13 +54,13 @@ BOOL Stage::DialogProc2(HWND hDlg, UINT msg, WPARAM wp, LPARAM lp)
 
 BOOL Stage::MenuProc2(HWND hMenu, UINT msg, WPARAM wp, LPARAM lp)
 {
-	switch (LOWORD(wp))
-	{
-	case ID_FILE_SAVE:
- 		int i = true;
-		SaveBlockData();
-	}
-			
+	//switch (LOWORD(wp))
+	//{
+	//case ID_FILE_SAVE:
+	//	PostQuitMessage(0);
+	//	return 0;
+	//}
+	//		
 	return FALSE;
 }
 
@@ -98,18 +98,11 @@ void Stage::Initialize()
 	hModel_[i] = Model::Load(fNameBase+modelName[i]);
 	assert(hModel_[i] >= 0);
 	}
-
-		
 }
 
 void Stage::Update()
 {
 	if (!Input::IsMouseButtonDown(0))return;
-	
-	if (Input::IsKeyDown(DIK_P))
-	{
-		SetBlockHeight(7, 7, ++a);
-	}
 	
 	float w = (float)(Direct3D::scrWidth / 2);
 	float h = (float)(Direct3D::scrHeight / 2);
@@ -213,18 +206,17 @@ void Stage::SaveBlockData()
 
 	if (selFile == FALSE)return;
 	std::ofstream outputFile(fileName1);
+
+	
+
 	for (int x = 0; x < XSIZE; x++)
 	{
 		for (int z = 0; z < ZSIZE; z++)
 		{
-			int i = x;
-
-			int j = z;//break point
-			oss<<this->table_[z][x].height;
+			oss<< table_[x][z].height;
 		}
 	}
 	
 	outputFile << oss.str();
 	outputFile.close();
 }
-

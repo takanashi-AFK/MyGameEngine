@@ -10,6 +10,7 @@
 #include "resource.h"
 
 #include"Stage.h"
+#include "Engine/GameObject.h"
 
 #pragma comment(lib, "winmm.lib")
 
@@ -163,13 +164,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 		PostQuitMessage(0);  //プログラム終了
 		return 0;
 	case WM_COMMAND:
-		switch (LOWORD(wParam))
+		Stage* ps = ((Stage*)pRootJob->FindObject("Stage"));
+		ps->SaveBlockData();
+		
+		
+		/*switch (LOWORD(wParam))
 		{
 		case ID_FILE_SAVE:
-			((Stage*)pRootJob->FindObject("Stage"))->SaveBlockData();
+			pStage->SaveBlockData();
 			return 0;
-		}
-
+		case ID_FILE_OPEN:
+			return 0;
+		case ID_FILE_NEW:
+			return 0;
+		}*/
+		//delete pStage;
 		return 0;
 	}
 	return DefWindowProc(hWnd, msg, wParam, lParam);

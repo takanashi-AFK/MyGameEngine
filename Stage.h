@@ -9,7 +9,6 @@ class Stage : public GameObject
 {
 private:
 	int hModel_[BLOCK_KINDS];
-	int a = 1;
 	enum BLOCKTYPE
 	{
 		BLOCK_DEFAULT = 0, 

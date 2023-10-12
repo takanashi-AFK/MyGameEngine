@@ -100,7 +100,6 @@ void GameObject::SetPosition(XMFLOAT3 _pos)
 
 GameObject* GameObject::FindObject(std::string _objName)
 {
-
 	return GetRootJob()->FindChildObject(_objName);
 }
 

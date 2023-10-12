@@ -13,7 +13,7 @@ PlayScene::PlayScene(GameObject* parent)
 void PlayScene::Initialize()
 {
 	Instantiate<Controller>(this);
-	Instantiate<Stage>(this);
+	GameObject * a = Instantiate<Stage>(this);
 }
 
 //XV

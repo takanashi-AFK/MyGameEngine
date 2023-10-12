@@ -26,4 +26,6 @@ public:
 
 	//ŠJ•ú
 	void Release() override;
+
+	int GetH() { return hModel_; }
 };
