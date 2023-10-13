@@ -219,4 +219,7 @@ void Stage::SaveBlockData()
 	
 	outputFile << oss.str();
 	outputFile.close();
+	//fucking save mode 
+	//i cant follow you,
+	//good bye fucking file data,table data ,and Stage data.
 }
